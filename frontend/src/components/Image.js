@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import '../Image.css';
 
 
 function Image({img, setRefresh, handleOpenImages, startIndex}){
@@ -26,7 +27,6 @@ function Image({img, setRefresh, handleOpenImages, startIndex}){
             id: img.id,
             descrizione: `${e.target.value}`,
         });
-        console.log(e.target.value)
     }
 
     function handleDelete(img){

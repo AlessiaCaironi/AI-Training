@@ -37,4 +37,11 @@
   }
 }
 
-
+/* component DropZone */
+.drop-zone {
+  text-align: center;
+  padding: 20px;
+  border: 1.5px lightgray dashed;
+  margin: auto;
+  border-radius: 3%;
+}
