@@ -21,7 +21,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
-router.register(r'datas', views.DataView, 'data')
 router.register(r'images', views.ImageView, 'image')
 
 urlpatterns = [

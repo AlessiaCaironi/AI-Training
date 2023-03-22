@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import RenderImages from "./components/RenderImages";
-import RenderDatas from "./components/RenderDatas";
+import NavCustomized from "./components/NavCustomized";
+import MainCustomized from "./components/MainCustomized";
 
 class App extends Component {
+  
   render() {
     return (
-      <main className="container">
-        <RenderDatas />
-        <RenderImages />
-      </main>
+      <div>
+        <NavCustomized />
+        <MainCustomized />
+      </div>
     );
   }
 }
