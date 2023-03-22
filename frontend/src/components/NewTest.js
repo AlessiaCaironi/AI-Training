@@ -102,6 +102,7 @@ export default function NewTest({handleClickBack}){
                                 autoComplete="off"
                                 value={name}
                                 onChange={handleNameChange}
+                                maxLength='50'
                             />  
                         </FormGroup>
                         <FormGroup className="my-4">
@@ -115,6 +116,7 @@ export default function NewTest({handleClickBack}){
                                 autoComplete="off"
                                 value={desc}
                                 onChange={handleDescChange}
+                                maxLength='200'
                             />
                         </FormGroup>
                         <FormGroup>
