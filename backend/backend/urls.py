@@ -22,6 +22,9 @@ from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'images', views.ImageView, 'image')
+router.register(r'tests', views.TestView, 'test')
+router.register(r'inputimages', views.InputImageView, 'inputimages')
+router.register(r'outputimages', views.OutputImageView, 'outputimages')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
