@@ -13,16 +13,11 @@ class Test(models.Model):
     def _str_(self):
         return self.name
     
-class InputImage(models.Model):
-    path = models.ImageField(upload_to='images_input')
+class Image(models.Model):
+    path_input = models.ImageField(upload_to='images_input')
+    path_output = models.ImageField(upload_to='images_output')
     test_id = models.ForeignKey(Test, on_delete=models.CASCADE)
 
     def _str_(self):
-        return self.path
-    
-class OutputImage(models.Model):
-    path = models.ImageField(upload_to='images_output')
-    image_input_id = models.ForeignKey(InputImage, on_delete= models.CASCADE)
+        return self.path_input
 
-    def _str_(self):
-        return self.path
