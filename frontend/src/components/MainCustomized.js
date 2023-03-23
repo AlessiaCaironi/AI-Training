@@ -6,13 +6,17 @@ import ShowTest from "./ShowTest";
 export default function MainCustomized(){
 
     const [page, setPage] = useState('tests');
+    const [testShow, setTestShow] = useState({});
 
     return(
         <>
         {(page==='tests') && 
             <ListTests 
                 handleClickNewTest={()=>setPage('newtest')} 
-                handleClickShowTest={()=>setPage('showtest')} 
+                handleClickShowTest={(test)=> {
+                    setPage('showtest');
+                    setTestShow(test);
+                }} 
             />
         }
         {(page==='newtest') && 
@@ -23,6 +27,7 @@ export default function MainCustomized(){
         {(page==='showtest') && 
             <ShowTest
                 handleClickBack={()=>{setPage('tests')}}
+                test={testShow}
             /> 
         }
         </>

@@ -13,7 +13,7 @@ export default class NavCustomized extends Component{
     <>
     <Navbar color="primary"  dark expand="md">
       <div className='container'>
-        <NavbarBrand href="/" >Progetto</NavbarBrand> 
+        <NavbarBrand href="/" >NOME PROGETTO</NavbarBrand> 
         <NavbarText ><DropdownCustomized >Account</DropdownCustomized></NavbarText>
       </div> 
     </Navbar>
