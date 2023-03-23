@@ -1,49 +1,74 @@
 import '../App.css';
-import React from "react";
+import React, {useState, useEffect} from "react";
 import HeaderCustomized from "./HeaderCustomized";
-import { Table, Button, Container, Row, Col, Spinner } from "reactstrap";
+import { Table, Button, Container, Row, Col } from "reactstrap";
 import { RiDeleteBinLine } from 'react-icons/ri';
+import axios from "axios";
+
+
+// <Spinner color='primary' size='sm'></Spinner>
 
 export default function ListTests({handleClickNewTest, handleClickShowTest}){
 
-    const TESTS = [
-        {
-            id: '1',
-            name: 'Primo test',
-            description: 'Prova della descrizione',
-            date: new Date(),
-            time: 200,
-        }, 
-        {
-            id: '2',
-            name: 'Secondo test',
-            description: 'Altra prova della descrizione',
-            date: new Date(),
-            time: 321,
-        }, 
-    ];
+    const [tests, setTests] = useState([]);
+    const [refresh, setRefresh] = useState(true);
 
-    const list = TESTS.map((item) => (
+    useEffect(() => {
+        axios
+        .get("http://localhost:8000/api/tests/")
+        .then(response => {
+            setTests(response.data);
+            setRefresh(false);
+        })
+    }, [refresh]); 
+    
+    const convert_time = (time) => {
+        var newtime = new Date(time).toLocaleString();
+        return newtime;
+    }
+
+    const diff_time = (time1, time2) => {
+        const newdate1 = new Date(time1).getTime();
+        const newdate2 = new Date(time2).getTime();
+        return (newdate2 - newdate1)/1000;
+    }
+
+    const handleRemoveTest = (id) => {
+        axios
+            .delete(`http://localhost:8000/api/tests/${id}/`)
+            .then(response => setRefresh(true));
+    };
+    
+
+    const list = tests.map((item, index) => ( 
         <>
-        <tr key={item.id}>
-            <th key={item.id} scope="row">
-                {item.id}
-            </th>
-            <td key={item.name} >
-                <a href='#'onClick={handleClickShowTest}>{item.name}</a>
+        <tr key={index}>
+            <th key={index} scope='row'>
+                {index+1}
+            </th> 
+            <td key={item.name}>
+                <a 
+                    href='#'
+                    onClick={()=>handleClickShowTest(item)}
+                >
+                    {item.name}
+                </a>
             </td>
             <td key={item.description} >
                 {item.description}
             </td>
-            <td key={item.date.toDateString()} >
-            {item.date.toLocaleDateString()} - {item.date.toLocaleTimeString()}
+            <td>
+                {convert_time(item.time_start)}
             </td>
-            <td key={item.time} >
-                {(item.id == 1) ? <Spinner color='primary' size='sm'></Spinner> :  <p>{item.time} s</p>}
+            <td>
+            {diff_time(item.time_start, item.time_end)} sec
+                
             </td>
             <td key='cestino' >
-                <RiDeleteBinLine color="red" />
-            </td>
+                <a href='#' onClick={()=>handleRemoveTest(item.id)}>
+                    <RiDeleteBinLine color="red" />
+                </a>
+            </td> 
         </tr>
         </>
     ));
@@ -70,17 +95,15 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                 <Table>
                 <thead>
                     <tr key="header">
-                        <th key='id'>
-                            Id
-                        </th>
+                        <th></th>
                         <th key='name'>
                             Name
                         </th>
                         <th key='desc'>
                             Description
                         </th>
-                        <th key='date'>
-                            Date
+                        <th key='start'>
+                            Start
                         </th>
                         <th key='time'>
                             Time

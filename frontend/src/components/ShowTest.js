@@ -1,32 +1,70 @@
-import React from "react";
-import { Container, Row, Col, Label, Card, CardTitle, CardBody, CardSubtitle } from "reactstrap";
+import React, {useState, useEffect}  from "react";
+import { Container, Row, Col, Card, CardTitle, CardBody, CardSubtitle, CardImg } from "reactstrap";
 import { IoArrowBackOutline } from 'react-icons/io5';
 import HeaderCustomized from "./HeaderCustomized";
 import { RiDeleteBinLine } from 'react-icons/ri';
+import axios from "axios";
 
-export default function ShowTest({handleClickBack}){
+export default function ShowTest({handleClickBack, test}){
 
-    const test = {
-            id: '1',
-            name: 'Primo test',
-            description: 'Prova della descrizione',
-            date: new Date(),
-            time: 200,
-        };
-        
+    const [images, setImages] = useState([]);
+    const [refresh, setRefresh] = useState(true);
+
+    useEffect(() => {
+        axios
+        .get("http://localhost:8000/api/images/test/"+test.id+'/')
+        .then(response => {
+            setImages(response.data);
+            setRefresh(false);
+        })
+    }, [refresh]); 
+
+    const convert_date = (time) => {
+        var newdate = new Date(time).toLocaleDateString();
+        return newdate;
+    }
+
+    const convert_time = (time) => {
+        var newtime = new Date(time).toLocaleTimeString();
+        return newtime;
+    }
+
+    const diff_time = (time1, time2) => {
+        const newdate1 = new Date(time1).getTime();
+        const newdate2 = new Date(time2).getTime();
+        return (newdate2 - newdate1)/1000;
+    }
+
+    const imgInputList = images.map((img) =>
+        <CardImg src={img.path_input} className="my-2" style={{width:'300px'}}/>
+    );
+
+    const imgOutputList = images.map((img) =>
+        <CardImg src={img.path_output} className="my-2" style={{width:'300px'}}/>
+    );
+
+    const handleRemoveTest = (id) => {
+        axios
+            .delete(`http://localhost:8000/api/tests/${id}/`)
+            .then(response => handleClickBack());
+    };
 
     return(
         <>
         <Container>
             <Row>
             <Col>
-                <h4 className="my-4"><IoArrowBackOutline  onClick={handleClickBack} /></h4>
+                <a href='#' onClick={handleClickBack}>
+                    <h4 className="my-4"><IoArrowBackOutline   /></h4>
+                </a>
             </Col>
             <Col className="text-center my-1">
                 <HeaderCustomized text={test.name} />
             </Col>
             <Col className="text-right my-4">
-                <h5 className="my-1"><RiDeleteBinLine color="red" /></h5>
+                <a href='#' onClick={()=>handleRemoveTest(test.id)}>
+                    <h5><RiDeleteBinLine color="red"/></h5>
+                </a>
             </Col>
             </Row>
             <Row className="my-4">
@@ -41,11 +79,11 @@ export default function ShowTest({handleClickBack}){
                 </Col>
             </Row>
             <Row>
-                <Col>
+            <Col>
                 <Card>
                     <CardBody>
                         <CardTitle tag='h6'>Start date</CardTitle>
-                        <CardSubtitle> {test.date.toLocaleDateString()}</CardSubtitle>
+                        <CardSubtitle> {convert_date(test.time_start)}</CardSubtitle>
                     </CardBody>
                 </Card>
                 </Col>
@@ -53,7 +91,7 @@ export default function ShowTest({handleClickBack}){
                 <Card>
                     <CardBody>
                         <CardTitle tag='h6'>Start time</CardTitle>
-                        <CardSubtitle> {test.date.toLocaleTimeString()}</CardSubtitle>
+                        <CardSubtitle>{convert_time(test.time_start)}</CardSubtitle>
                     </CardBody>
                 </Card>
                 </Col>
@@ -61,7 +99,7 @@ export default function ShowTest({handleClickBack}){
                 <Card>
                     <CardBody>
                         <CardTitle tag='h6'>Time</CardTitle>
-                        <CardSubtitle> {test.time} s </CardSubtitle>
+                        <CardSubtitle> {diff_time(test.time_start, test.time_end)} sec </CardSubtitle>
                     </CardBody>
                 </Card>
                 </Col>
@@ -69,9 +107,27 @@ export default function ShowTest({handleClickBack}){
                 <Card>
                     <CardBody>
                         <CardTitle tag='h6'>Processed Images </CardTitle>
-                        <CardSubtitle> 4</CardSubtitle>
+                        <CardSubtitle> {images.length}</CardSubtitle>
                     </CardBody>
                 </Card>
+                </Col>
+            </Row>
+            <Row className="my-4 text-center"> 
+                <Col>
+                    <Card> 
+                        <CardBody>
+                        <CardTitle tag='h6'>Before</CardTitle>
+                        {imgInputList} 
+                        </CardBody>
+                    </Card>
+                </Col>
+                <Col>
+                    <Card>
+                        <CardBody>
+                        <CardTitle tag='h6'>After</CardTitle>
+                        {imgOutputList} 
+                        </CardBody>
+                    </Card>
                 </Col>
             </Row>
         </Container>

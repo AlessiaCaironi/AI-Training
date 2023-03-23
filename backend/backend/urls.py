@@ -22,11 +22,11 @@ from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'tests', views.TestView, 'test')
-router.register(r'inputimages', views.InputImageView, 'inputimages')
-router.register(r'outputimages', views.OutputImageView, 'outputimages')
+router.register(r'images', views.ImageView, 'images')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/images/test/<testid>/', views.ImageTestView.as_view()),
     path('api/', include(router.urls)), 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

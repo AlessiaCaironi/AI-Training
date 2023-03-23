@@ -6,20 +6,25 @@ import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from "reac
 import { IoArrowBackOutline } from 'react-icons/io5';
 import { Gallery } from "react-grid-gallery";
 import ModalAlert from "./ModalAlert";
+import axios from "axios";
 
 
 export default function NewTest({handleClickBack}){
 
     const [files, setFiles] = useState([]);
-        
     const [name, setName] = useState('');
+    const [desc, setDesc] = useState('');
     const [nameMissing, setNameMissing] = useState(false);
+    const [descMissing, setDescMissing] = useState(false);
+    const [ImageMissing, setImageMissing] = useState(false);
+    const [images, setImages] = useState([]);
+
+
     const handleNameChange = (e) => {
-        setNameMissing(false);
         setName(e.target.value);
     }
 
-    const [desc, setDesc] = useState('');
+    
     const handleDescChange = (e) => {
         setDesc(e.target.value);
     }
@@ -36,7 +41,6 @@ export default function NewTest({handleClickBack}){
         }
     });  
 
-    const [images, setImages] = useState([]);
 
     // gestione selezione immagini
     const handleSelect = (index, item, event) => {
@@ -63,19 +67,72 @@ export default function NewTest({handleClickBack}){
         setImages(newimages);
     }, [files])
     
-    useEffect(() => {
 
+    useEffect(() => {
         // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
        return () => files.forEach(file => URL.revokeObjectURL(file.preview));
-        
-      }, [files]);
+    }, [files]);
+
 
     const handleStart = () =>{
+
+        // check if name is valid
         if(name===''){
             setNameMissing(true);
-        } else {
-            console.log('start');
+            return
         }
+
+        // check if description is valid
+        if(desc===''){
+            setDescMissing(true);
+            return
+        }
+
+        // check if there is at least one selected image
+        const selectedImages = [];
+        images.forEach(img => {
+            if(img.isSelected){
+                selectedImages.push(img)
+            }
+        });
+        if(selectedImages.length<1){
+            setImageMissing(true);
+            return
+        }
+
+        // creo test da aggiungere
+        const date = new Date();
+        const newTest = {
+            "name": `${name}`,
+            "description": `${desc}`,
+            "time_start": `${date.toJSON()}`,
+            "time_end": `${date.toJSON()}`
+        }
+        
+        // chiamata per aggiungere il test
+        axios
+            .post("http://localhost:8000/api/tests/", newTest)
+            .then(response => {
+                files.forEach( (item, index) => {
+                    console.log(images[index].isSelected);
+                    // controllo se l'immagine è selezionata
+                    if(images[index].isSelected){
+                        let form_data = new FormData();
+                        form_data.append("path_input", item, item.name);
+                        form_data.append("path_output", item, item.name);
+                        form_data.append("test_id", response.data.id);
+                        
+                        // chiamata per aggiungere l'immagine (img di output uguale alla rispettiva img di input)
+                        axios
+                            .post(`http://localhost:8000/api/images/`, form_data, {
+                                headers: {
+                                        "Content-Type": "image/jpeg, image/png",
+                                },
+                            });
+                    }
+                });
+                handleClickBack();
+            });
     }
    
     return(
@@ -83,8 +140,9 @@ export default function NewTest({handleClickBack}){
             <Container>
                 <Row>
                 <Col>
-                    <h4 className="my-4"><IoArrowBackOutline  onClick={handleClickBack} /></h4>
-                </Col>
+                    <a href='#' onClick={handleClickBack}>
+                        <h4 className="my-4"><IoArrowBackOutline   /></h4>
+                    </a>                </Col>
                 <Col className="text-center my-1">
                     <HeaderCustomized text={'New test'} />
                 </Col>
@@ -160,6 +218,14 @@ export default function NewTest({handleClickBack}){
         </Container>
         {nameMissing ? 
             <ModalAlert setShowAlert={setNameMissing} msgAlert={'Name required'}/>
+            : null
+        }
+        {ImageMissing ? 
+            <ModalAlert setShowAlert={setImageMissing} msgAlert={'Select at least one image'}/>
+            : null
+        }
+        {descMissing ? 
+            <ModalAlert setShowAlert={setDescMissing} msgAlert={'Description required'}/>
             : null
         }
         </>
