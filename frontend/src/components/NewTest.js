@@ -22,7 +22,6 @@ export default function NewTest({handleClickBack, handleClickSave}){
     const handleNameChange = (e) => {
         setName(e.target.value);
     }
-
     
     const handleDescChange = (e) => {
         setDesc(e.target.value);
@@ -134,7 +133,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
                             })
                             .then(() => {
                                 cont = cont-1;
-                                if(cont==0){
+                                if(cont===0){
                                     handleClickSave(response.data.id);
                                 }
                             })
@@ -150,9 +149,10 @@ export default function NewTest({handleClickBack, handleClickSave}){
             <Container>
                 <Row>
                 <Col>
-                    <a href='#' onClick={handleClickBack}>
-                        <h4 className="my-4"><IoArrowBackOutline   /></h4>
-                    </a>                </Col>
+                    <h4 onClick={handleClickBack} className="my-4 pointer">
+                        <IoArrowBackOutline />
+                    </h4>
+                </Col>
                 <Col className="text-center my-1">
                     <HeaderCustomized text={'New test'} />
                 </Col>
@@ -160,7 +160,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
                 </Row>
                 <Row>
                     <Form className="container">
-                        <FormGroup className="my-3" >
+                        <FormGroup className="mb-3" >
                             <Label for="name">
                                 Name
                             </Label>
@@ -215,7 +215,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
                     </Form>
                 </Row>
                 <Row className="my-2">
-                    <Col className="text-right my-2">
+                    <Col className="text-right">
                         <Button
                             color="primary"
                             outline

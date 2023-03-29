@@ -79,22 +79,17 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
 
     const list = tests.map((item, index) => ( 
         <>
-        <tr key={item.id}>
-            <th key={index} scope='row'>
+        <tr key={index}>
+            <th scope='row'>
                 {index+1}
             </th> 
             
             {item.time_start && 
                 <>
-                    <td key={item.name}>
-                        <a 
-                            href='#'
-                            onClick={()=>handleClickShowTest(item)}
-                        >
-                            {item.name}
-                        </a>
+                    <td onClick={()=>handleClickShowTest(item)} className='pointer' style={{textDecoration:'underline'}}>
+                        {item.name}  
                     </td>
-                    <td key={item.description} >
+                    <td>
                         {item.description}
                     </td>
                     <td>
@@ -103,19 +98,17 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                     <td>
                         {diff_time(item.time_start, item.time_end)} sec   
                     </td>
-                    <td key='cestino' >
-                        <a href='#' onClick={()=>handleRemoveTest(item.id)}>
-                            <RiDeleteBinLine color="red" />
-                        </a>
+                    <td>
+                        <RiDeleteBinLine color="red" onClick={()=>handleRemoveTest(item.id)} className='pointer'/>
                     </td> 
                 </>
             }
             { item.time_start==null &&
                 <>
-                    <td key={item.name}>
+                    <td>
                         {item.name}
                     </td>
-                    <td key={item.description} >
+                    <td>
                         {item.description}
                     </td>
                     <td><Spinner color='primary' size='sm'></Spinner></td>
@@ -131,8 +124,8 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
     return(
         <>
             <Container>
-            <Row >
-                <Col ></Col>
+            <Row>
+                <Col></Col>
                 <Col className="text-center my-1">
                     <HeaderCustomized text={'Tests'}/>
                 </Col>
@@ -146,24 +139,24 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                     </Button>
                 </Col>
             </Row>
-            <Row className="my-2">
+            <Row className="my-1">
                 <Table>
                 <thead>
-                    <tr key="header">
+                    <tr>
                         <th></th>
-                        <th key='name'>
+                        <th>
                             Name
                         </th>
-                        <th key='desc'>
+                        <th>
                             Description
                         </th>
-                        <th key='start'>
+                        <th>
                             Start
                         </th>
-                        <th key='time'>
+                        <th>
                             Time
                         </th>
-                        <th key='canc'>
+                        <th>
                         </th>
                     </tr>
                 </thead>

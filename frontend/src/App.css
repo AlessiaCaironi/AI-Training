@@ -7,3 +7,8 @@
   margin: auto;
   border-radius: 1%;
 }
+
+.pointer {
+  cursor: pointer;
+  color: rgb(2, 117, 216);
+}

@@ -31,7 +31,7 @@ export default function ShowTest({handleClickBack, test}){
                 setRefresh(false);
             })
             .catch(err => console.log(err))
-    }, [refresh]); 
+    }, [refresh, test]); 
 
     const convert_date = (time) => {
         var newdate = new Date(time).toLocaleDateString();
@@ -58,18 +58,16 @@ export default function ShowTest({handleClickBack, test}){
 
     const listCards = images.map((img, index) => 
         <>
-            <Card className="mb-4 mx-3">
+            <Card className="mb-4 mx-3" key={index}>
                 <CardHeader className="d-flex justify-content-between">
                     {img.path_input.split('/')[4]}
-                    <a href='#'>
                         <AiOutlineZoomIn 
-                            className="my-1" 
+                            className="my-1 pointer" 
                             onClick={() => {
                                 setShowZoom(!showZoom);
                                 setImgZoom(img);
                             }}
                         />
-                    </a>
                 </CardHeader>
                 <CardBody>
                     <CardImg 
@@ -119,17 +117,13 @@ export default function ShowTest({handleClickBack, test}){
                 <>
                 <Row>
                 <Col>
-                    <a href='#' onClick={handleClickBack}>
-                        <h4 className="my-4"><IoArrowBackOutline   /></h4>
-                    </a>
+                    <h4 className="my-4 pointer" onClick={handleClickBack}><IoArrowBackOutline   /></h4>
                 </Col>
                 <Col className="text-center my-1">
                     <HeaderCustomized text={test.name} />
                 </Col>
                 <Col className="text-right my-4">
-                    <a href='#' onClick={()=>handleRemoveTest(test.id)}>
-                        <h5><RiDeleteBinLine color="red" className="my-1"/></h5>
-                    </a>
+                    <h5 className="pointer" onClick={()=>handleRemoveTest(test.id)}><RiDeleteBinLine color="red" className="my-1"/></h5>
                 </Col>
                 </Row>
                 <Row className="mb-4 mt-1">
@@ -188,14 +182,15 @@ export default function ShowTest({handleClickBack, test}){
                     <Card className="my-4 mx-3">
                         <CardHeader className="d-flex justify-content-between">
                             {imgZoom.path_input.split('/')[4]}
-                            <a href='#' onClick={()=>setShowZoom(!showZoom)}>
-                            <h6><AiOutlineClose
+                            
+                            <h6 onClick={()=>setShowZoom(!showZoom)} className='pointer'>
+                            <AiOutlineClose
                                 onClick={() => {
                                     setShowZoom(!showZoom);
                                     setImgZoom(null);
                                 }}
-                                /></h6>
-                            </a>
+                            /></h6>
+                            
                         </CardHeader>
                         <CardBody>
                             <CardImg 
