@@ -8,8 +8,6 @@ from .models import Image
 from .tasks import resize_img
 from rest_framework import generics
 
-# Create your views here.
-
 class TestView(viewsets.ModelViewSet):
     serializer_class = TestSerializer
     queryset = Test.objects.all()
@@ -18,13 +16,15 @@ class ImageView(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
 
-# prendi tutte le immagini input relative ad un test
+# get all records in Image with test_id=testid
+# testid is specified in URL
 class ImageTestView(generics.ListAPIView):
     serializer_class = ImageSerializer
     def get_queryset(self):
         testid = self.kwargs['testid']
         return Image.objects.filter(test_id=testid)
     
-def test(request, testid):
+def ResizeView(request, testid):
     resize_img.delay(testid)
     return HttpResponse("Done")
+

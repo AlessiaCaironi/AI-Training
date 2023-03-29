@@ -14,7 +14,8 @@ class TestSerializer(serializers.ModelSerializer):
 
 class ImageSerializer(serializers.ModelSerializer):
 
-    path_output = serializers.ImageField(required=False, max_length=None, allow_empty_file=True, use_url=True)
+    path_output = serializers.ImageField(required=False, max_length=None, 
+                                         allow_empty_file=True, use_url=True)
 
     class Meta: 
         model = Image

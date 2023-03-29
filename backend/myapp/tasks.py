@@ -10,7 +10,7 @@ import datetime
 
 @shared_task(bind=True)
 def resize_img(self, testid, *args, **kwargs):
-
+    
     test = Test.objects.get(id=testid)
     test.time_start = datetime.datetime.utcnow()
 
@@ -20,7 +20,6 @@ def resize_img(self, testid, *args, **kwargs):
     for item in queryset:
         # open image
         img = PIL.Image.open(item.path_input)
-        
         output = BytesIO()
 
         # resize the image
@@ -35,8 +34,7 @@ def resize_img(self, testid, *args, **kwargs):
             output.seek(0)
             
             # change the path_output value to be the newley modified image value
-            item.path_output = InMemoryUploadedFile(output, 'ImageField', 
-                                                     "%s.png" %item.path_input.name.split('.')[0], 
+            item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.png" %item.path_input.name.split('.')[0], 
                                                      'image/png', sys.getsizeof(output), None)
         # jpg
         else:
@@ -45,13 +43,11 @@ def resize_img(self, testid, *args, **kwargs):
             output.seek(0)
             
             # change the path_output value to be the newley modified image value
-            item.path_output = InMemoryUploadedFile(output, 'ImageField', 
-                                                         "%s.jpg" %item.path_input.name.split('.')[0], 
-                                                         'image/jpeg', sys.getsizeof(output), None)
+            item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" %item.path_input.name.split('.')[0], 
+                                                    'image/jpeg', sys.getsizeof(output), None)
        
         item.save(update_fields=["path_output"])   
     
-
     test.time_end = datetime.datetime.utcnow()
     test.save(update_fields=["time_start", "time_end"])
 
