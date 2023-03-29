@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "react-awesome-lightbox/build/style.css";
+// import "react-awesome-lightbox/build/style.css";
 import {ModalHeader} from "reactstrap";
 import Image from "./Image";
-import Lightbox from 'react-awesome-lightbox/build/style.css';
+// import Lightbox from 'react-awesome-lightbox/build/style.css';
 
 function GetZone( {imageList, setRefresh}){
 
@@ -32,7 +32,12 @@ function GetZone( {imageList, setRefresh}){
                 <Image img={item} key={item.id} setRefresh={setRefresh} handleOpenImages={handleOpenImages} startIndex={index}/>
             ))}
         </ul> 
-        {openImages && <Lightbox images={imageOpenList} onClose={() => setOpenImages(!openImages)} startIndex={startOpenIndex}></Lightbox>} 
+        {openImages && 
+            <Lightbox 
+                images={imageOpenList} 
+                onClose={() => setOpenImages(!openImages)} 
+                startIndex={startOpenIndex}
+            ></Lightbox>} 
         </> 
     )
 }
