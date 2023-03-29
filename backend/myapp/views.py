@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from rest_framework import viewsets
 from .serializers import TestSerializer
 from .serializers import ImageSerializer
 from .models import Test
 from .models import Image
+from .tasks import resize_img
 from rest_framework import generics
 
 # Create your views here.
@@ -23,5 +25,6 @@ class ImageTestView(generics.ListAPIView):
         testid = self.kwargs['testid']
         return Image.objects.filter(test_id=testid)
     
-
-
+def test(request, testid):
+    resize_img.delay(testid)
+    return HttpResponse("Done")

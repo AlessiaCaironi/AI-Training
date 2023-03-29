@@ -9,7 +9,7 @@ import ModalAlert from "./ModalAlert";
 import axios from "axios";
 
 
-export default function NewTest({handleClickBack}){
+export default function NewTest({handleClickBack, handleClickSave}){
 
     const [files, setFiles] = useState([]);
     const [name, setName] = useState('');
@@ -18,7 +18,6 @@ export default function NewTest({handleClickBack}){
     const [descMissing, setDescMissing] = useState(false);
     const [ImageMissing, setImageMissing] = useState(false);
     const [images, setImages] = useState([]);
-
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -101,25 +100,29 @@ export default function NewTest({handleClickBack}){
         }
 
         // creo test da aggiungere
-        const date = new Date();
         const newTest = {
             "name": `${name}`,
             "description": `${desc}`,
-            "time_start": `${date.toJSON()}`,
-            "time_end": `${date.toJSON()}`
         }
         
         // chiamata per aggiungere il test
         axios
             .post("http://localhost:8000/api/tests/", newTest)
             .then(response => {
+
+                // conto immagini selezionate 
+                let cont = 0;
+                files.forEach( (item,index ) => {
+                    if(images[index].isSelected){
+                        cont = cont+1;
+                    }
+                });
+
                 files.forEach( (item, index) => {
-                    console.log(images[index].isSelected);
                     // controllo se l'immagine è selezionata
                     if(images[index].isSelected){
                         let form_data = new FormData();
                         form_data.append("path_input", item, item.name);
-                        form_data.append("path_output", item, item.name);
                         form_data.append("test_id", response.data.id);
                         
                         // chiamata per aggiungere l'immagine (img di output uguale alla rispettiva img di input)
@@ -128,13 +131,20 @@ export default function NewTest({handleClickBack}){
                                 headers: {
                                         "Content-Type": "image/jpeg, image/png",
                                 },
-                            });
+                            })
+                            .then(() => {
+                                cont = cont-1;
+                                if(cont==0){
+                                    handleClickSave(response.data.id);
+                                }
+                            })
+                            .catch(err => console.log(err));
                     }
-                });
-                handleClickBack();
-            });
+                });  
+            })
+            .catch(err => console.log(err))
     }
-   
+
     return(
         <>
             <Container>

@@ -1,14 +1,12 @@
 from django.db import models
-
-# Create your models here.
     
 class Test(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200, default='')
     # inizio computazione
-    time_start = models.DateTimeField()
+    time_start = models.DateTimeField(null=True)
     # fine computazione
-    time_end = models.DateTimeField()
+    time_end = models.DateTimeField(null=True)
 
     def _str_(self):
         return self.name
@@ -20,4 +18,4 @@ class Image(models.Model):
 
     def _str_(self):
         return self.path_input
-
+    

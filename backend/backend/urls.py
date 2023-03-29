@@ -28,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/images/test/<testid>/', views.ImageTestView.as_view()),
     path('api/', include(router.urls)), 
+    path('celery/<testid>/', views.test),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # ultima aggiunta per ottenere le singole immagini

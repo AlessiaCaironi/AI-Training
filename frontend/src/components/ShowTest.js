@@ -1,6 +1,6 @@
 import React, {useState, useEffect}  from "react";
-import { Container, Row, Col, Card, CardTitle, CardBody, CardSubtitle, CardImg } from "reactstrap";
-import { IoArrowBackOutline } from 'react-icons/io5';
+import { Container, Row, Col, Card, CardTitle, CardBody, CardSubtitle, CardImg, CardHeader } from "reactstrap";
+import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import HeaderCustomized from "./HeaderCustomized";
 import { RiDeleteBinLine } from 'react-icons/ri';
 import axios from "axios";
@@ -12,11 +12,12 @@ export default function ShowTest({handleClickBack, test}){
 
     useEffect(() => {
         axios
-        .get("http://localhost:8000/api/images/test/"+test.id+'/')
-        .then(response => {
-            setImages(response.data);
-            setRefresh(false);
-        })
+            .get("http://localhost:8000/api/images/test/"+test.id+'/')
+            .then(response => {
+                setImages(response.data);
+                setRefresh(false);
+            })
+            .catch(err => console.log(err))
     }, [refresh]); 
 
     const convert_date = (time) => {
@@ -35,19 +36,27 @@ export default function ShowTest({handleClickBack, test}){
         return (newdate2 - newdate1)/1000;
     }
 
-    const imgInputList = images.map((img) =>
-        <CardImg src={img.path_input} className="my-2" style={{width:'300px'}}/>
-    );
-
-    const imgOutputList = images.map((img) =>
-        <CardImg src={img.path_output} className="my-2" style={{width:'300px'}}/>
-    );
-
     const handleRemoveTest = (id) => {
         axios
             .delete(`http://localhost:8000/api/tests/${id}/`)
-            .then(response => handleClickBack());
+            .then(response => handleClickBack())
+            .catch(err => console.log(err));
     };
+
+    const listCards = images.map((img) => 
+        <>
+            <Card className="mb-4 mx-3">
+                <CardHeader>
+                    {img.path_input.split('/')[4]}
+                </CardHeader>
+                <CardBody>
+                    <CardImg src={img.path_input} className="mx-1" style={{width:'230px'}}/>
+                    <IoArrowForwardOutline/>
+                    <CardImg src={img.path_output} className="mx-1" style={{width:'230px'}}/>
+                </CardBody>
+            </Card>
+        </>
+    );
 
     return(
         <>
@@ -112,23 +121,8 @@ export default function ShowTest({handleClickBack, test}){
                 </Card>
                 </Col>
             </Row>
-            <Row className="my-4 text-center"> 
-                <Col>
-                    <Card> 
-                        <CardBody>
-                        <CardTitle tag='h6'>Before</CardTitle>
-                        {imgInputList} 
-                        </CardBody>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card>
-                        <CardBody>
-                        <CardTitle tag='h6'>After</CardTitle>
-                        {imgOutputList} 
-                        </CardBody>
-                    </Card>
-                </Col>
+            <Row className="my-4 text-center d-flex justify-content-between"> 
+                {listCards}
             </Row>
         </Container>
         </>
