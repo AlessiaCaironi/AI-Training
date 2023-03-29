@@ -160,7 +160,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
                 </Row>
                 <Row>
                     <Form className="container">
-                        <FormGroup className="my-4" >
+                        <FormGroup className="my-3" >
                             <Label for="name">
                                 Name
                             </Label>
@@ -214,16 +214,16 @@ export default function NewTest({handleClickBack, handleClickSave}){
                         </FormGroup>
                     </Form>
                 </Row>
-                <Row className="my-4">
-                <Col className="text-right my-4">
-                    <Button
-                        color="primary"
-                        outline
-                        onClick={handleStart}
-                    >
-                        Start
-                    </Button>
-                </Col>
+                <Row className="my-2">
+                    <Col className="text-right my-2">
+                        <Button
+                            color="primary"
+                            outline
+                            onClick={handleStart}
+                        >
+                            Start
+                        </Button>
+                    </Col>
                 </Row>
         </Container>
         {nameMissing ? 

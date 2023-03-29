@@ -146,7 +146,7 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                     </Button>
                 </Col>
             </Row>
-            <Row className="my-4">
+            <Row className="my-2">
                 <Table>
                 <thead>
                     <tr key="header">
