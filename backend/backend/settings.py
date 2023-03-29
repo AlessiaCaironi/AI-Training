@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'myapp',
     'django_cleanup.apps.CleanupConfig',
+    'django_celery_results',
+    #'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # percorso per raggiungere la cartella contenente i caricamenti dell'utente (compresa la cartella imgs con le immagini caricate)
 MEDIA_ROOT = 'myapp/uploads'
+
+
+# CELERY SETTINGS
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIME_ZONE = 'Europe/Rome'
+# per avere il task name nella tabella Task results di admin
+CELERY_RESULT_EXTENDED = True
+
+CELERY_RESULT_BACKEND = 'django-db'
+
+# CELERY BEAT 
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
