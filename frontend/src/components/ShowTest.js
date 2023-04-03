@@ -4,11 +4,13 @@ import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import {AiOutlineClose, AiOutlineZoomIn} from 'react-icons/ai'
 import { RiDeleteBinLine } from 'react-icons/ri';
 import HeaderCustomized from "./HeaderCustomized";
-import axios from "axios";
 import "react-awesome-lightbox/build/style.css";
 import Lightbox from 'react-awesome-lightbox';
+import useAxios from '../utils/useAxios';
 
 export default function ShowTest({handleClickBack, test}){
+
+    const api = useAxios();
 
     const [images, setImages] = useState([]);
     const [refresh, setRefresh] = useState(true);
@@ -24,7 +26,7 @@ export default function ShowTest({handleClickBack, test}){
     
     
     useEffect(() => {
-        axios
+        api
             .get("http://localhost:8000/api/images/test/"+test.id+'/')
             .then(response => {
                 setImages(response.data);
@@ -50,7 +52,7 @@ export default function ShowTest({handleClickBack, test}){
     }
 
     const handleRemoveTest = (id) => {
-        axios
+        api
             .delete(`http://localhost:8000/api/tests/${id}/`)
             .then(response => handleClickBack())
             .catch(err => console.log(err));

@@ -6,10 +6,12 @@ import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from "reac
 import { IoArrowBackOutline } from 'react-icons/io5';
 import { Gallery } from "react-grid-gallery";
 import ModalAlert from "./ModalAlert";
-import axios from "axios";
+import useAxios from '../utils/useAxios';
 
 
 export default function NewTest({handleClickBack, handleClickSave}){
+
+    const api = useAxios();
 
     const [files, setFiles] = useState([]);
     const [name, setName] = useState('');
@@ -105,7 +107,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
         }
         
         // chiamata per aggiungere il test
-        axios
+        api
             .post("http://localhost:8000/api/tests/", newTest)
             .then(response => {
 
@@ -125,7 +127,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
                         form_data.append("test_id", response.data.id);
                         
                         // chiamata per aggiungere l'immagine (img di output uguale alla rispettiva img di input)
-                        axios
+                        api
                             .post(`http://localhost:8000/api/images/`, form_data, {
                                 headers: {
                                         "Content-Type": "image/jpeg, image/png",

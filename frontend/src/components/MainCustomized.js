@@ -2,19 +2,22 @@ import React, {useState} from "react";
 import ListTests from "./ListTests";
 import NewTest from "./NewTest";
 import ShowTest from "./ShowTest";
-import axios from "axios";
+import useAxios from '../utils/useAxios';
 
 export default function MainCustomized(){
+
+    const api = useAxios();
 
     const [page, setPage] = useState('tests');
     const [testShow, setTestShow] = useState({});
 
     function handleClickSave(idtest){
-        axios
-            .get("http://localhost:8000/celery/"+idtest+"/")
+        // start celery
+        api
+            .get("http://localhost:8000/api/tests/"+idtest+"/start/")
             .then((response => console.log(response)))
             .catch(err => console.log(err));
-        // mostro la pagina ListTest
+        // show ListTest
         setPage('tests'); 
     }
 

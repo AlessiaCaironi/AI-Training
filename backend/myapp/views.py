@@ -8,23 +8,60 @@ from .models import Image
 from .tasks import resize_img
 from rest_framework import generics
 
+# authentication
+from rest_framework.decorators import api_view, permission_classes, action
+from rest_framework.response import Response
+from django.http import JsonResponse
+from .serializers import MyTokenObtainPairSerializer, RegisterSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
+@permission_classes([IsAuthenticated])
 class TestView(viewsets.ModelViewSet):
     serializer_class = TestSerializer
     queryset = Test.objects.all()
 
+    # start celery
+    @action(detail=True,
+        methods = ["get"],
+        name = "start worker",
+        url_name = r'start_worker',
+        url_path = r'start',)
+    def start(self, request, pk=None):
+            resize_img.delay(pk)
+            return HttpResponse("Start test")
+
+@permission_classes([IsAuthenticated])
 class ImageView(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
 
 # get all records in Image with test_id=testid
 # testid is specified in URL
+@permission_classes([IsAuthenticated])
 class ImageTestView(generics.ListAPIView):
     serializer_class = ImageSerializer
     def get_queryset(self):
         testid = self.kwargs['testid']
         return Image.objects.filter(test_id=testid)
-    
-def ResizeView(request, testid):
-    resize_img.delay(testid)
-    return HttpResponse("Done")
 
+# authentication
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
+
+@api_view(['GET'])
+def getRoutes(request):
+    routes = [
+        '/api/token/',
+        '/api/register/',
+        '/api/token/refresh/', 
+        '/api/images/',
+        '/api/tests/',
+    ]
+    return Response(routes)

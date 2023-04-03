@@ -20,6 +20,10 @@ from myapp import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
+
 router = routers.DefaultRouter()
 router.register(r'tests', views.TestView, 'test')
 router.register(r'images', views.ImageView, 'images')
@@ -28,7 +32,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/images/test/<testid>/', views.ImageTestView.as_view()),
     path('api/', include(router.urls)), 
-    path('celery/<testid>/', views.ResizeView),
+    path('api/token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/register/', views.RegisterView.as_view(), name='auth_register'),
+    path('', views.getRoutes)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # ultima aggiunta per ottenere le singole immagini
