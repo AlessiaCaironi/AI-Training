@@ -1,4 +1,4 @@
-import {Modal, ModalHeader} from "reactstrap"
+import {Modal, ModalHeader, ModalBody} from "reactstrap"
 
 
 function ModalAlert({setShowAlert, msgAlert}){
@@ -7,7 +7,8 @@ function ModalAlert({setShowAlert, msgAlert}){
 
     return(
         <Modal isOpen={true} toggle={onDismiss}>
-            <ModalHeader toggle={onDismiss}>{msgAlert} </ModalHeader>
+            <ModalHeader toggle={onDismiss}>Error</ModalHeader>
+            <ModalBody >{msgAlert} </ModalBody>
         </Modal>
     );
 }

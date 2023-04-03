@@ -3,21 +3,22 @@ import React, {useState, useEffect } from "react";
 import HeaderCustomized from "./HeaderCustomized";
 import { Table, Button, Container, Row, Col, Spinner } from "reactstrap";
 import { RiDeleteBinLine } from 'react-icons/ri';
-import axios from "axios";
-import useInterval from 'use-interval'
-
+import useInterval from 'use-interval';
+import useAxios from '../utils/useAxios';
 
 export default function ListTests({handleClickNewTest, handleClickShowTest}){
+
+    const api = useAxios();
 
     const [tests, setTests] = useState([]);
     const [refresh, setRefresh] = useState(true);
 
     // polling 
-    const [delay, setDelay] = useState(2000);
+    const [delay, setDelay] = useState(1000);
     const [isPolling, setPolling] = useState(false);
 
     useEffect(() => {
-        axios
+        api
         .get("http://localhost:8000/api/tests/")
         .then(response => {
             const len = response.data.length;
@@ -42,7 +43,7 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
 
     // func called during polling
     const checkTimeStart = (id) => {
-        axios
+        api
             .get("http://localhost:8000/api/tests/"+id+"/")
             .then((response) => {
                 const item = response.data;
@@ -70,7 +71,7 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
     }
 
     const handleRemoveTest = (id) => {
-        axios
+        api
             .delete(`http://localhost:8000/api/tests/${id}/`)
             .then(response => setRefresh(true))
             .catch(err => console.log(err));
