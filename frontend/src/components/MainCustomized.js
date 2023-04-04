@@ -15,7 +15,6 @@ export default function MainCustomized(){
         // start celery
         api
             .get("http://localhost:8000/api/tests/"+idtest+"/start/")
-            .then((response => console.log(response)))
             .catch(err => console.log(err));
         // show ListTest
         setPage('tests'); 

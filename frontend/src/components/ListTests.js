@@ -21,13 +21,19 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
         api
         .get("http://localhost:8000/api/tests/")
         .then(response => {
-            const len = response.data.length;
-            const last = response.data[len-1];
-            if(last.time_end == null && last.time_start == null){
-                setPolling(true);
+            // check - at least 1 test 
+            if(response.data.length > 0){
+                const len = response.data.length;
+                const last = response.data[len-1];
+                if(last.time_end == null && last.time_start == null){
+                    setPolling(true);
+                }
+                setTests(response.data);
+                setRefresh(false);
+            } else {
+                setTests([]);
+                setRefresh(false);
             }
-            setTests(response.data);
-            setRefresh(false);
         })
         .catch(err => console.log(err))
     }, [refresh]); 
@@ -76,7 +82,6 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
             .then(response => setRefresh(true))
             .catch(err => console.log(err));
     };
-    
 
     const list = tests.map((item, index) => ( 
         <>
@@ -91,13 +96,16 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                         {item.name}  
                     </td>
                     <td>
-                        {item.description}
+                        {item.created_by.username}
                     </td>
                     <td>
                         {convert_time(item.time_start)}
                     </td>
                     <td>
                         {diff_time(item.time_start, item.time_end)} sec   
+                    </td>
+                    <td>
+                        {item.image_count}
                     </td>
                     <td>
                         <RiDeleteBinLine color="red" onClick={()=>handleRemoveTest(item.id)} className='pointer'/>
@@ -149,13 +157,16 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                             Name
                         </th>
                         <th>
-                            Description
+                            Created by
                         </th>
                         <th>
                             Start
                         </th>
                         <th>
                             Time
+                        </th>
+                        <th>
+                            Images
                         </th>
                         <th>
                         </th>

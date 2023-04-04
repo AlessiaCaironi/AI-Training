@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'myapp',
     'django_cleanup.apps.CleanupConfig',
     'django_celery_results',
+    'django_userforeignkey',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django_userforeignkey.middleware.UserForeignKeyMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -190,3 +194,8 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# required for Debug Toolbar
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

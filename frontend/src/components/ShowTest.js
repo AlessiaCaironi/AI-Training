@@ -22,17 +22,17 @@ export default function ShowTest({handleClickBack, test}){
 
     // compare images
     const [showZoom, setShowZoom] = useState(false);
-    const [imgZoom, setImgZoom] = useState(null);
-    
+    const [imgZoom, setImgZoom] = useState(null);    
     
     useEffect(() => {
+        // get images 
         api
             .get("http://localhost:8000/api/images/test/"+test.id+'/')
             .then(response => {
                 setImages(response.data);
                 setRefresh(false);
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     }, [refresh, test]); 
 
     const convert_date = (time) => {
@@ -125,15 +125,24 @@ export default function ShowTest({handleClickBack, test}){
                     <HeaderCustomized text={test.name} />
                 </Col>
                 <Col className="text-right my-4">
-                    <h5 className="pointer" onClick={()=>handleRemoveTest(test.id)}><RiDeleteBinLine color="red" className="my-1"/></h5>
+                    <h5 ><RiDeleteBinLine color="red" className="my-1" onClick={()=>handleRemoveTest(test.id)} style={{cursor:'pointer'}}/></h5>
                 </Col>
                 </Row>
                 <Row className="mb-4 mt-1">
-                    <Col>
+                    <Col className="col-9">
                         <Card>
                         <CardBody>
                             <CardTitle tag='h6'>Description</CardTitle>
                             <CardSubtitle> {test.description}</CardSubtitle>
+                        </CardBody>
+                        </Card>
+                        
+                    </Col>
+                    <Col className="col-3">
+                        <Card>
+                        <CardBody>
+                            <CardTitle tag='h6'>Created by</CardTitle>
+                            <CardSubtitle> {test.created_by.username}</CardSubtitle>
                         </CardBody>
                         </Card>
                         
@@ -168,7 +177,7 @@ export default function ShowTest({handleClickBack, test}){
                     <Card>
                         <CardBody>
                             <CardTitle tag='h6'>Processed Images </CardTitle>
-                            <CardSubtitle> {images.length}</CardSubtitle>
+                            <CardSubtitle> {test.image_count}</CardSubtitle>
                         </CardBody>
                     </Card>
                     </Col>
