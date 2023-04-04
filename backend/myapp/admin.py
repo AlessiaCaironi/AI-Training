@@ -5,7 +5,7 @@ from .models import Image
 # Register your models here.
 
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'description', 'time_start', 'time_end')
+    list_display = ('id', 'name', 'description', 'time_start', 'time_end', 'created_by')
 
 class ImageAdmin(admin.ModelAdmin):
     List_display = ('id', 'path_input', 'path_output' 'test_id')

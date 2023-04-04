@@ -1,5 +1,5 @@
 
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import HeaderCustomized from "./HeaderCustomized";
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from "reactstrap";
@@ -7,7 +7,6 @@ import { IoArrowBackOutline } from 'react-icons/io5';
 import { Gallery } from "react-grid-gallery";
 import ModalAlert from "./ModalAlert";
 import useAxios from '../utils/useAxios';
-
 
 export default function NewTest({handleClickBack, handleClickSave}){
 
@@ -105,7 +104,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
             "name": `${name}`,
             "description": `${desc}`,
         }
-        
+
         // chiamata per aggiungere il test
         api
             .post("http://localhost:8000/api/tests/", newTest)
@@ -216,7 +215,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
                         </FormGroup>
                     </Form>
                 </Row>
-                <Row className="my-2">
+                <Row className="mt-2">
                     <Col className="text-right">
                         <Button
                             color="primary"

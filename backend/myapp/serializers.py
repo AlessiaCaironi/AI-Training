@@ -6,17 +6,31 @@ from .models import Image
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework.validators import UniqueValidator
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username',)
+
 
 class TestSerializer(serializers.ModelSerializer):
 
     time_start = serializers.DateTimeField(required=False)
     time_end = serializers.DateTimeField(required=False)
+    created_by = UserSerializer(required=False) 
+
+    image_count = serializers.IntegerField(
+        source='image_set.count',
+        read_only=True
+    )
 
     class Meta: 
         model = Test
-        fields = ('id', 'name', 'description', 'time_start', 'time_end')
+        fields = ('id', 'name', 'description', 'time_start', 'time_end', 'created_by', 'image_count')
+
+
 
 
 class ImageSerializer(serializers.ModelSerializer):

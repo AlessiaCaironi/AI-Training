@@ -5,27 +5,44 @@ import {
   NavItem,
   NavbarBrand,
   Nav, 
-  NavLink
+  NavLink,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  Button,
  } from 'reactstrap'
  import AuthContext from "../context/AuthContext";
 
 const NavCustomized = () => {
   const { user, logoutUser  } = useContext(AuthContext);
-  
+
   return(
   <>
   <Navbar color="primary"  dark expand="md">
     <div className='container'>
-      
-      
         {user && 
           <>
           <NavbarBrand >NOME PROGETTO</NavbarBrand>
           <Nav navbar>
-            <NavItem >
-              <NavLink onClick={logoutUser} style={{cursor:'pointer'}} >
-                Logout
-              </NavLink>
+              <NavItem>
+                <UncontrolledDropdown group>
+                  <Button color="primary" >
+                    Hi, {user.username}
+                  </Button>
+                    <DropdownToggle
+                      caret
+                      color="primary"
+                    />
+                   <DropdownMenu>
+                    <DropdownItem header>
+                      {user.email}
+                    </DropdownItem> 
+                    <DropdownItem onClick={logoutUser} style={{cursor:'pointer'}}>
+                      Logout
+                    </DropdownItem>
+                   </DropdownMenu>
+                </UncontrolledDropdown>
               </NavItem>
           </Nav> 
           </>

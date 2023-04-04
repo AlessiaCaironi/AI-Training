@@ -9,6 +9,7 @@ import Register from "./views/registerPage";
 import ProtectedPage from "./views/ProtectedPage";
 
 function App() {
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen overflow-hidden">
