@@ -99,13 +99,13 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                         {item.created_by.username}
                     </td>
                     <td>
-                        {convert_time(item.time_start)}
+                        {item.image_count}
+                    </td>
+                    <td>
+                        {convert_time(item.time_start)}                        
                     </td>
                     <td>
                         {diff_time(item.time_start, item.time_end)} sec   
-                    </td>
-                    <td>
-                        {item.image_count}
                     </td>
                     <td>
                         <RiDeleteBinLine color="red" onClick={()=>handleRemoveTest(item.id)} className='pointer'/>
@@ -118,7 +118,7 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                         {item.name}
                     </td>
                     <td>
-                        {item.description}
+                        {item.created_by.username}
                     </td>
                     <td><Spinner color='primary' size='sm'></Spinner></td>
                     <td></td>
@@ -160,13 +160,13 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                             Created by
                         </th>
                         <th>
+                            Images
+                        </th>
+                        <th>
                             Start
                         </th>
                         <th>
                             Time
-                        </th>
-                        <th>
-                            Images
                         </th>
                         <th>
                         </th>

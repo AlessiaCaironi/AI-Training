@@ -199,3 +199,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+# This setting adds HttpOnly flag in HTTP response 
+# If the HttpOnly flag is enabled, access to the cookie is restricted to the server alone.
+# It removes the risk of an attacker obtaining cookie information using XSS attacks. 
+SESSION_COOKIE_HTTPONLY = True
