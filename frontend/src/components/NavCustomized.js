@@ -16,7 +16,6 @@ import {
 
 const NavCustomized = () => {
   const { user, logoutUser  } = useContext(AuthContext);
-
   return(
   <>
   <Navbar color="primary"  dark expand="md">

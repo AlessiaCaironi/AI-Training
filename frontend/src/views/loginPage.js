@@ -2,9 +2,10 @@ import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 import { Container, Row, Col, Form, Label, Input, FormGroup, Button } from 'reactstrap'
 import HeaderCustomized from "../components/HeaderCustomized";
+import MainCustomized from "../components/MainCustomized";
 
 const LoginPage = () => {
-  const { loginUser } = useContext(AuthContext);
+  const { user, loginUser } = useContext(AuthContext);
   const handleSubmit = e => {
     e.preventDefault();
     const username = e.target.username.value;
@@ -14,6 +15,7 @@ const LoginPage = () => {
 
   return (
     <>
+    { !user && 
     <Container>
       <Row className="my-2">
         <Col></Col>
@@ -44,6 +46,10 @@ const LoginPage = () => {
         </Form>
       </Row>
     </Container>
+    }
+    { user &&
+      <MainCustomized />
+    }
     </>
   );
 };
