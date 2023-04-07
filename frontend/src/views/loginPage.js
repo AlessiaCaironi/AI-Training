@@ -1,16 +1,20 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import { Container, Row, Col, Form, Label, Input, FormGroup, Button } from 'reactstrap'
 import HeaderCustomized from "../components/HeaderCustomized";
 import MainCustomized from "../components/MainCustomized";
+import ModalAlert from "../components/ModalAlert";
 
 const LoginPage = () => {
+
+  const [ errorLogin, setErrorLogin ] = useState(false);
+
   const { user, loginUser } = useContext(AuthContext);
   const handleSubmit = e => {
     e.preventDefault();
     const username = e.target.username.value;
     const password = e.target.password.value;
-    username.length > 0 && loginUser(username, password);
+    username.length > 0 && loginUser(username, password, setErrorLogin);
   };
 
   return (
@@ -49,6 +53,10 @@ const LoginPage = () => {
     }
     { user &&
       <MainCustomized />
+    }
+    {errorLogin ? 
+      <ModalAlert setShowAlert={setErrorLogin} msgAlert={'Incorrect username or password'}/>
+      : null
     }
     </>
   );

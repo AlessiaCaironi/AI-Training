@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   // funzione per fare login di un utente ed ottenere i token. 
   // Se l'utente presente nel db (credenziali valide), allora l'utente è loggato. 
   // I due token ricevuti (access e refresh) sono salvati nel local storage.
-  const loginUser = async (username, password) => {
+  const loginUser = async (username, password, setErrorLogin) => {
     const response = await fetch("http://127.0.0.1:8000/api/token/", {
       method: "POST",
       headers: {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("authTokens", JSON.stringify(data));
       history.push("/protected");
     } else {
-      alert("Something went wrong!");
+      setErrorLogin(true);
     }
   };
   
