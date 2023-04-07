@@ -7,13 +7,15 @@ import ModalAlert from "../components/ModalAlert";
 
 const LoginPage = () => {
 
+  const [ username, setUsername] = useState(null);
+  const [ password, setPassword ] = useState(null);
+
   const [ errorLogin, setErrorLogin ] = useState(false);
 
   const { user, loginUser } = useContext(AuthContext);
+  
   const handleSubmit = e => {
     e.preventDefault();
-    const username = e.target.username.value;
-    const password = e.target.password.value;
     username.length > 0 && loginUser(username, password, setErrorLogin);
   };
 
@@ -34,13 +36,13 @@ const LoginPage = () => {
             <Col md={5} >
               <FormGroup>
                 <Label htmlFor="username">Username</Label>
-                <Input type="text" id="username" placeholder="Enter Username" />
+                <Input type="text" id="username" placeholder="Enter Username" onChange={e => setUsername(e.target.value)} />
               </FormGroup>
             </Col>
             <Col md={5}>
               <FormGroup>
                 <Label htmlFor="password">Password</Label>
-                <Input type="password" id="password" placeholder="Enter Password" />
+                <Input type="password" id="password" placeholder="Enter Password" onChange={e => setPassword(e.target.value)}/>
               </FormGroup>
             </Col>
             <Col md={2} className='text-right mt-4'>
