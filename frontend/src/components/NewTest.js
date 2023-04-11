@@ -18,6 +18,8 @@ export default function NewTest({handleClickBack, handleClickSave}){
     const [nameMissing, setNameMissing] = useState(false);
     const [descMissing, setDescMissing] = useState(false);
     const [ImageMissing, setImageMissing] = useState(false);
+    // show modal if image's post request fails (es. insert html code in file with .png extension)
+    const [errorImagePost, setErrorImagePost ] = useState(false); 
     const [images, setImages] = useState([]);
 
     const handleNameChange = (e) => {
@@ -138,7 +140,18 @@ export default function NewTest({handleClickBack, handleClickSave}){
                                     handleClickSave(response.data.id);
                                 }
                             })
-                            .catch(err => console.log(err));
+                            .catch(err => {
+                                // se inserimento immagini non va a buon fine, allora cancella il test creato
+                                console.log(err);
+                                // cancella le eventuali immagini già inserite (politica on delete cascade)
+                                api
+                                .delete(`http://localhost:8000/api/tests/${response.data.id}/`)
+                                .then(() => {
+                                    setErrorImagePost(true);
+                                    return;
+                                })
+                                .catch(err => console.log(err));
+                            });
                     }
                 });  
             })
@@ -237,6 +250,10 @@ export default function NewTest({handleClickBack, handleClickSave}){
         }
         {descMissing ? 
             <ModalAlert setShowAlert={setDescMissing} msgAlert={'Description required'}/>
+            : null
+        }
+        {errorImagePost ? 
+            <ModalAlert setShowAlert={setErrorImagePost} msgAlert={'Check your images'}/>
             : null
         }
         </>
