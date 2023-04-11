@@ -46,11 +46,14 @@ def resize_img(self, testid, *args, **kwargs):
             item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" %item.path_input.name.split('.')[0], 
                                                     'image/jpeg', sys.getsizeof(output), None)
        
+        
         item.save(update_fields=["path_output"])   
     
+    # chiudo altrimenti img in images_input non si eliminano quando cancello il relativo test
+    output.close() 
+
     test.time_end = datetime.datetime.utcnow()
     test.save(update_fields=["time_start", "time_end"])
 
     print(test.time_end - test.time_start)
-
     return "Resize done"
