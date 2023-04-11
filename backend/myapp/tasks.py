@@ -19,39 +19,35 @@ def resize_img(self, testid, *args, **kwargs):
 
     for item in queryset:
         # open image
-        img = PIL.Image.open(item.path_input)
-        output = BytesIO()
+        with PIL.Image.open(item.path_input) as img, BytesIO() as output:
+            # resize the image
+            width, height = img.size
+            img =img.resize((width,width))
 
-        # resize the image
-        width, height = img.size
-        img =img.resize((width,width))
+            format = item.path_input.name.split('.')[1]
 
-        format = item.path_input.name.split('.')[1]
+            if format==f'png':
+                # after modifications, save it to the output
+                img.save(output, format='png', quality=100)
+                output.seek(0)
+                
+                # change the path_output value to be the newley modified image value
+                item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.png" %item.path_input.name.split('.')[0], 
+                                                        'image/png', sys.getsizeof(output), None)
+            # jpg
+            else:
+                # after modifications, save it to the output
+                img.save(output, format='JPEG', quality=100)
+                output.seek(0)
+                
+                # change the path_output value to be the newley modified image value
+                item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" %item.path_input.name.split('.')[0], 
+                                                        'image/jpeg', sys.getsizeof(output), None)
 
-        if format==f'png':
-            # after modifications, save it to the output
-            img.save(output, format='png', quality=100)
-            output.seek(0)
-            
-            # change the path_output value to be the newley modified image value
-            item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.png" %item.path_input.name.split('.')[0], 
-                                                     'image/png', sys.getsizeof(output), None)
-        # jpg
-        else:
-            # after modifications, save it to the output
-            img.save(output, format='JPEG', quality=100)
-            output.seek(0)
-            
-            # change the path_output value to be the newley modified image value
-            item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" %item.path_input.name.split('.')[0], 
-                                                    'image/jpeg', sys.getsizeof(output), None)
-       
-        
-        item.save(update_fields=["path_output"])   
+            item.save(update_fields=["path_output"])   
+            item.path_input.close()
+            item.path_output.close()
     
-    # chiudo altrimenti img in images_input non si eliminano quando cancello il relativo test
-    output.close() 
-
     test.time_end = datetime.datetime.utcnow()
     test.save(update_fields=["time_start", "time_end"])
 

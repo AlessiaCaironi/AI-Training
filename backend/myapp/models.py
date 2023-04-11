@@ -19,5 +19,5 @@ class Image(models.Model):
     test_id = models.ForeignKey(Test, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.pk
+        return self.path_input
     
