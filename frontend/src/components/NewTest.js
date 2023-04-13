@@ -228,7 +228,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
                         </FormGroup>
                     </Form>
                 </Row>
-                <Row className="mt-2">
+                <Row className="my-2">
                     <Col className="text-right">
                         <Button
                             color="primary"
