@@ -47,9 +47,9 @@ def resize_img(self, testid, *args, **kwargs):
             item.save(update_fields=["path_output"])   
             item.path_input.close()
             item.path_output.close()
+
     
     test.time_end = datetime.datetime.utcnow()
     test.save(update_fields=["time_start", "time_end"])
 
-    print(test.time_end - test.time_start)
     return "Resize done"

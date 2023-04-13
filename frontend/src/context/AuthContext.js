@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   
   // funzione per registrare un nuovo utente nel db.
   // se la registrazione ha successo, l'utente viene reindirizzato alla pagina di login.
-  const registerUser = async (username, password, password2) => {
+  const registerUser = async (username, password, password2, setErrorRegister) => {
     const response = await fetch("http://127.0.0.1:8000/api/register/", {
       method: "POST",
       headers: {
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
     if (response.status === 201) {
       history.push("/login");
     } else {
-      alert("Something went wrong!");
+      setErrorRegister(true);
     }
   };
 

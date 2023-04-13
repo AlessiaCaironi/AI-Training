@@ -15,6 +15,8 @@ function Register() {
   const [ passwordMatch, setPasswordMatch ] = useState(false);
   const [ errorPassword, setErrorPassword ] = useState(false);
   const [ msgErrorPassword, setMsgErrorPassword ] = useState(null);
+  // tutti gli altri errori (compreso user già esistente)
+  const [ errorRegister, setErrorRegister ] = useState(null);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -48,7 +50,7 @@ function Register() {
       return
     }
 
-    registerUser(username, password, password2);
+    registerUser(username, password, password2, setErrorRegister);
   };
 
   return (
@@ -122,6 +124,10 @@ function Register() {
     }
     {errorPassword ? 
       <ModalAlert setShowAlert={setErrorPassword} msgAlert={msgErrorPassword}/>
+      : null
+    }
+     {errorRegister ? 
+      <ModalAlert setShowAlert={setErrorRegister} msgAlert={'Registration failed'}/>
       : null
     }
     </>
