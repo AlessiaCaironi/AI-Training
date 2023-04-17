@@ -18,7 +18,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class TestView(viewsets.ModelViewSet):
     serializer_class = TestSerializer
     # selec_related utile per fare un'unica query al posto di 2 

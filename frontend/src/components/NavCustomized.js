@@ -22,7 +22,7 @@ const NavCustomized = () => {
     <div className='container'>
         {user && 
           <>
-          <NavbarBrand >NOME PROGETTO</NavbarBrand>
+          <NavbarBrand >AI-TEST</NavbarBrand>
           <Nav navbar>
               <NavItem>
                 <UncontrolledDropdown group>
@@ -49,7 +49,7 @@ const NavCustomized = () => {
 
         {!user &&
           <>
-            <Link to='/'><NavbarBrand >NOME PROGETTO</NavbarBrand></Link>
+            <Link to='/'><NavbarBrand >AI-TEST</NavbarBrand></Link>
             <Nav navbar>
               <NavItem>
                 <NavLink href='/register'>
