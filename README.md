@@ -48,3 +48,8 @@ Create superuser
 ```
 python3 manage.py createsuperuser
 ```
+
+Start server
+```
+python3 manage.py startserver
+```
