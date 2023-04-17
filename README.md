@@ -17,12 +17,19 @@ Create a clone of the repository
 git clone https://github.com/AlessiaCaironi/progetto_tesi
 ```
 
-Move in the repository 
+Move in the backend repository of the project
 ```
-cd progetto_tesi
+cd progetto_tesi/backend
 ```
 
 Sync the database
 ```
-python manage.py migrate
+python3 manage.py makemigration
+python3 manage.py migrate
+```
+
+Install
+```
+pip install celery
+pip install python-decouple
 ```
