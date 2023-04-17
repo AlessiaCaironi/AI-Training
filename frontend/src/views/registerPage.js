@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 function Register() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const { registerUser } = useContext(AuthContext);
@@ -50,7 +51,7 @@ function Register() {
       return
     }
 
-    registerUser(username, password, password2, setErrorRegister);
+    registerUser(username, email, password, password2, setErrorRegister);
   };
 
   return (
@@ -83,8 +84,21 @@ function Register() {
                 />
               </FormGroup>
             </Col>
+            <Col md={6} >
+              <FormGroup>
+                <Label htmlFor="username">Email</Label>
+                <Input
+                  type="text"
+                  id="email"
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="Enter e-mail"
+                  required
+                  autoComplete="off"
+                />
+              </FormGroup>
+            </Col>
           </Row>
-          <Row>
+          <Row className="mt-3">
             <Col md={6} >
               <FormGroup>
               <Label htmlFor="password">Password</Label>
