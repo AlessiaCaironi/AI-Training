@@ -22,14 +22,29 @@ Move in the backend repository of the project
 cd progetto_tesi/backend
 ```
 
+create a file .env with the SECRET_KEY
+
+Install
+```
+pip install celery
+pip install python-decouple
+pip install django-cors-headers
+pip install djangorestframework-simplejwt
+pip install django-cleanup
+pip install django-celery-results
+pip install django-userforeignkey
+pip install django-debug-toolbar
+pip install Pillow
+
+```
+
 Sync the database
 ```
 python3 manage.py makemigration
 python3 manage.py migrate
 ```
 
-Install
+Create superuser
 ```
-pip install celery
-pip install python-decouple
+python3 manage.py createsuperuser
 ```
