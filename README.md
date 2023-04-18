@@ -36,8 +36,6 @@ pip install django-debug-toolbar
 pip install Pillow
 pip install celery
 pip install Redis
-sudo apt-get install redis-server
-sudo service redis-server start
 ```
 
 Sync the database
@@ -61,6 +59,8 @@ Install Redis
 sudo apt-get update
 sudo apt install redis
 redis-cli --version
+sudo apt-get install redis-server
+sudo service redis-server start
 ```
 
 Check if Redis is active 
