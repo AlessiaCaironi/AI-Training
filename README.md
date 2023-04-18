@@ -71,3 +71,10 @@ Start Celery
 celery -A backend.celery worker --pool=solo -l info 
 ```
 
+Install
+```
+cd ../frontend/
+sudo apt install npm
+npm install react-scripts
+npm start
+```
