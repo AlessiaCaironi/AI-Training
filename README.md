@@ -35,6 +35,7 @@ pip install django-userforeignkey
 pip install django-debug-toolbar
 pip install Pillow
 pip install celery
+pip install Redis
 ```
 
 Sync the database
@@ -64,3 +65,9 @@ Check if Redis is active
 ```
 sudo systemctl status redis
 ```
+
+Start Celery 
+```
+celery -A backend.celery worker --pool=solo -l info 
+```
+
