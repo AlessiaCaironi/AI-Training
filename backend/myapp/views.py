@@ -61,7 +61,7 @@ class ImageTestView(generics.ListAPIView):
     serializer_class = ImageSerializer
     def get_queryset(self):
         testid = self.kwargs['testid']
-        return Image.objects.filter(test_id=testid)
+        return Image.objects.filter(test_id=testid).order_by('path_input')
 
 # authentication
 class MyTokenObtainPairView(TokenObtainPairView):
