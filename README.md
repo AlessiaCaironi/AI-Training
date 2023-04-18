@@ -22,7 +22,7 @@ Move in the backend repository of the project
 cd progetto_tesi/backend
 ```
 
-create a file .env with the SECRET_KEY
+Create a file .env with the SECRET_KEY
 
 Install
 ```
