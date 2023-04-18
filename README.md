@@ -36,6 +36,7 @@ pip install django-debug-toolbar
 pip install Pillow
 pip install celery
 pip install Redis
+sudo apt-get install redis-server
 ```
 
 Sync the database
