@@ -51,5 +51,17 @@ python3 manage.py createsuperuser
 
 Start server
 ```
-python3 manage.py runserver
+python3 manage.py runserver 
+```
+
+Install Redis 
+```
+sudo apt-get update
+sudo apt install redis
+redis-cli --version
+```
+
+Check if Redis is active 
+```
+sudo systemctl status redis
 ```
