@@ -37,6 +37,7 @@ pip install Pillow
 pip install celery
 pip install Redis
 sudo apt-get install redis-server
+sudo service redis-server start
 ```
 
 Sync the database
