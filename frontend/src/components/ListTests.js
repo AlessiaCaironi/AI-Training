@@ -1,13 +1,16 @@
 import '../App.css';
-import React, {useState, useEffect } from "react";
+import React, {useState, useEffect, useContext } from "react";
 import HeaderCustomized from "./HeaderCustomized";
 import { Table, Button, Container, Row, Col, Spinner } from "reactstrap";
 import { RiDeleteBinLine } from 'react-icons/ri';
 import useInterval from 'use-interval';
 import useAxios from '../utils/useAxios';
 
+import AuthContext from "../context/AuthContext";
+
 export default function ListTests({handleClickNewTest, handleClickShowTest}){
 
+    const { user } = useContext(AuthContext);
     const api = useAxios();
 
     const [tests, setTests] = useState([]);
@@ -83,7 +86,7 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
             .catch(err => console.log(err));
     };
 
-    const list = tests.map((item, index) => ( 
+    const list = tests.map((item, index) => (  
         <>
         <tr key={index}>
             <th scope='row'>
@@ -108,7 +111,10 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                         {diff_time(item.time_start, item.time_end)} sec   
                     </td>
                     <td>
+                        {
+                        (user.username == item.created_by.username) &&
                         <RiDeleteBinLine color="red" onClick={()=>handleRemoveTest(item.id)} className='pointer'/>
+                        }
                     </td> 
                 </>
             }

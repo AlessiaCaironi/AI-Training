@@ -1,4 +1,4 @@
-import React, {useState, useEffect}  from "react";
+import React, {useState, useEffect, useContext}  from "react";
 import { Container, Row, Col, Card, CardTitle, CardBody, CardSubtitle, CardImg, CardHeader } from "reactstrap";
 import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import {AiOutlineClose, AiOutlineZoomIn} from 'react-icons/ai'
@@ -8,8 +8,11 @@ import "react-awesome-lightbox/build/style.css";
 import Lightbox from 'react-awesome-lightbox';
 import useAxios from '../utils/useAxios';
 
+import AuthContext from "../context/AuthContext";
+
 export default function ShowTest({handleClickBack, test}){
 
+    const { user } = useContext(AuthContext);
     const api = useAxios();
 
     const [images, setImages] = useState([]);
@@ -125,7 +128,10 @@ export default function ShowTest({handleClickBack, test}){
                     <HeaderCustomized text={test.name} />
                 </Col>
                 <Col className="text-right my-4">
+                    {
+                    (user.username == test.created_by.username) &&
                     <h5 ><RiDeleteBinLine color="red" className="my-1" onClick={()=>handleRemoveTest(test.id)} style={{cursor:'pointer'}}/></h5>
+                    }
                 </Col>
                 </Row>
                 <Row className="mb-4 mt-1">
