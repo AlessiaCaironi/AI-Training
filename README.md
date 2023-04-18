@@ -60,7 +60,7 @@ sudo apt-get update
 sudo apt install redis
 redis-cli --version
 sudo apt-get install redis-server
-sudo service redis-server start
+sudo systemctl enable redis-server      # ogni volta che si apre la vm parte il server di Redis
 ```
 
 Check if Redis is active 
