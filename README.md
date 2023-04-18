@@ -51,5 +51,5 @@ python3 manage.py createsuperuser
 
 Start server
 ```
-python3 manage.py startserver
+python3 manage.py runserver
 ```
