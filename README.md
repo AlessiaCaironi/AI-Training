@@ -75,7 +75,7 @@ Start Celery
 celery -A backend.celery worker --pool=solo -l info 
 ```
 
-Install
+Install and start
 ```
 cd ../frontend/
 sudo apt install npm
