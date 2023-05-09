@@ -1,5 +1,7 @@
 # README 
 
+L’applicazione web “AI-Training” è uno strumento che consente di allenare un modello AI di classificazione delle immagini, permettendo ad un utente di costituire il dataset di immagini su cui si basa il funzionamento del modello. Di seguito sono riportate le istruzioni da seguire per installarlo.
+
 Create a virtual environment to isolate our package dependencies locally 
 ```
 python3 -m venv env
