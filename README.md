@@ -80,6 +80,7 @@ Install and start
 cd ../frontend/
 sudo apt install npm
 npm install react-scripts 
+npm install @mui/material @emotion/react @emotion/styled
 npm install react-awesome-lightbox --force
 npm start
 ```
