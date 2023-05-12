@@ -1,7 +1,7 @@
 from django.db import models
 from django_userforeignkey.models.fields import UserForeignKey
     
-class Test(models.Model):
+class Item(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200, default='')
     # inizio computazione
@@ -16,7 +16,7 @@ class Test(models.Model):
 class Image(models.Model):
     path_input = models.ImageField(upload_to='images_input')
     path_output = models.ImageField(upload_to='images_output')
-    test_id = models.ForeignKey(Test, on_delete=models.CASCADE)
+    item_id = models.ForeignKey(Item, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.pk) + ", " + self.path_input.name

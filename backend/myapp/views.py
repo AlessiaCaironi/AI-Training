@@ -3,11 +3,11 @@ from django.http import HttpResponse, JsonResponse
 from django.core.serializers import serialize
 import json
 from rest_framework import viewsets
-from .serializers import TestSerializer
+from .serializers import ItemSerializer
 from .serializers import ImageSerializer
-from .models import Test
+from .models import Item
 from .models import Image
-from .tasks import resize_img
+from .tasks import preprocessing_img
 from rest_framework import generics
 
 # authentication
@@ -19,11 +19,11 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 @permission_classes([IsAuthenticated])
-class TestView(viewsets.ModelViewSet):
-    serializer_class = TestSerializer
+class ItemView(viewsets.ModelViewSet):
+    serializer_class = ItemSerializer
     # selec_related utile per fare un'unica query al posto di 2 
-    # (1 per test e 1 per ampliare i record con i dati dell'utente creatore)
-    queryset = Test.objects.select_related('created_by')
+    # (1 per item e 1 per ampliare i record con i dati dell'utente creatore)
+    queryset = Item.objects.select_related('created_by')
 
     # start celery
     @action(detail=True,
@@ -32,8 +32,8 @@ class TestView(viewsets.ModelViewSet):
         url_name = r'start_worker',
         url_path = r'start',)
     def start(self, request, pk=None):
-        resize_img.delay(pk)
-        return HttpResponse("Start test")
+        preprocessing_img.delay(pk)
+        return HttpResponse("Start processing")
     
     # get username from pk
     # @action(detail=True,
@@ -54,14 +54,14 @@ class ImageView(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
 
-# get all records in Image with test_id=testid
+# get all records in Image with item_id=itemid
 # testid is specified in URL
 @permission_classes([IsAuthenticated])
-class ImageTestView(generics.ListAPIView):
+class ImageItemView(generics.ListAPIView):
     serializer_class = ImageSerializer
     def get_queryset(self):
-        testid = self.kwargs['testid']
-        return Image.objects.filter(test_id=testid).order_by('path_input')
+        itemid = self.kwargs['itemid']
+        return Image.objects.filter(item_id=itemid).order_by('path_input')
 
 # authentication
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -79,6 +79,6 @@ def getRoutes(request):
         '/api/register/',
         '/api/token/refresh/', 
         '/api/images/',
-        '/api/tests/',
+        '/api/items/',
     ]
     return Response(routes)

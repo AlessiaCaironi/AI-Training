@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Test
+from .models import Item
 from .models import Image
 
 # autenticazione
@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('username','email')
 
 
-class TestSerializer(serializers.ModelSerializer):
+class ItemSerializer(serializers.ModelSerializer):
 
     time_start = serializers.DateTimeField(required=False)
     time_end = serializers.DateTimeField(required=False)
@@ -27,7 +27,7 @@ class TestSerializer(serializers.ModelSerializer):
     )
 
     class Meta: 
-        model = Test
+        model = Item
         fields = ('id', 'name', 'description', 'time_start', 'time_end', 'created_by', 'image_count')
 
 
@@ -41,7 +41,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta: 
         model = Image
-        fields = ('id', 'path_input', 'path_output', 'test_id')
+        fields = ('id', 'path_input', 'path_output', 'item_id')
 
 
 # create token if valid username and password are provided
@@ -51,10 +51,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        # Add custom claims
         token['username'] = user.username
         token['email'] = user.email
-        # ...
         return token
 
 # used to register a new user in the db    

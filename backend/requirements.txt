@@ -13,7 +13,9 @@ django-celery-beat==2.5.0
 django-celery-results==2.5.0
 django-cleanup==7.0.0
 django-cors-headers==3.14.0
+django-debug-toolbar==4.0.0
 django-timezone-field==5.0
+django-userforeignkey==0.5.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 kombu==5.2.4
@@ -23,6 +25,7 @@ prompt-toolkit==3.0.38
 PyJWT==2.6.0
 python-crontab==2.7.1
 python-dateutil==2.8.2
+python-decouple==3.8
 pytz==2022.7.1
 redis==4.5.2
 six==1.16.0

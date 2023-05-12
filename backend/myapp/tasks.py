@@ -1,55 +1,54 @@
 from celery import shared_task
 from .models import Image
-from .models import Test
+from .models import Item
 import PIL
+from PIL import ImageEnhance
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
 import datetime 
 
-
 @shared_task(bind=True)
-def resize_img(self, testid, *args, **kwargs):
+def preprocessing_img(self, itemid, *args, **kwargs):
     
-    test = Test.objects.get(id=testid)
-    test.time_start = datetime.datetime.utcnow()
+    item = Item.objects.get(id=itemid)
+    item.time_start = datetime.datetime.utcnow()          # timestamp start preprocessing
 
-    # select all the images that have (test_id == testid)
-    queryset = Image.objects.filter(test_id=testid)
+    queryset = Image.objects.filter(item_id=itemid)       
 
-    for item in queryset:
+    for elem in queryset:
         # open image
-        with PIL.Image.open(item.path_input) as img, BytesIO() as output:
-            # resize the image
+        with PIL.Image.open(elem.path_input) as img, BytesIO() as output:
+            
             width, height = img.size
-            img =img.resize((width,width))
+            img =img.resize((width,width))                # resize
 
-            format = item.path_input.name.split('.')[1]
+            enhancer = ImageEnhance.Contrast(img)
+            img = enhancer.enhance(1.5)                   # increase contrast
+
+            format = elem.path_input.name.split('.')[1]
 
             if format==f'png':
-                # after modifications, save it to the output
-                img.save(output, format='png', quality=100)
-                output.seek(0)
+                img_format = 'png'
+                extension = 'png'
+            else: 
+                img_format = 'jpeg'
+                extension = 'jpg'
+
+            # after modifications, save it to the output
+            img.save(output, format=img_format, quality=100)
+            output.seek(0)
                 
-                # change the path_output value to be the newley modified image value
-                item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.png" %item.path_input.name.split('.')[0], 
-                                                        'image/png', sys.getsizeof(output), None)
-            # jpg
-            else:
-                # after modifications, save it to the output
-                img.save(output, format='JPEG', quality=100)
-                output.seek(0)
-                
-                # change the path_output value to be the newley modified image value
-                item.path_output = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" %item.path_input.name.split('.')[0], 
-                                                        'image/jpeg', sys.getsizeof(output), None)
+            # change the path_output value to be the newley modified image value
+            elem.path_output = InMemoryUploadedFile(output, 'ImageField', 
+                                                    elem.path_input.name.split('.')[0] + "." + extension, 
+                                                    'image/'+img_format, sys.getsizeof(output), None)
 
-            item.save(update_fields=["path_output"])   
-            item.path_input.close()
-            item.path_output.close()
+            elem.save(update_fields=["path_output"])   
+            elem.path_input.close()
+            elem.path_output.close()
 
-    
-    test.time_end = datetime.datetime.utcnow()
-    test.save(update_fields=["time_start", "time_end"])
+    item.time_end = datetime.datetime.utcnow()             # timestamp end preprocessing
+    item.save(update_fields=["time_start", "time_end"])
 
-    return "Resize done"
+    return "Processing done"
