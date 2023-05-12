@@ -1,46 +1,46 @@
 import React, {useState} from "react";
-import ListTests from "./ListTests";
-import NewTest from "./NewTest";
-import ShowTest from "./ShowTest";
+import ListItem from "./ListItem";
+import NewItem from "./NewItem";
+import ShowItem from "./ShowItem";
 import useAxios from '../utils/useAxios';
 
 export default function MainCustomized(){
 
     const api = useAxios();
 
-    const [page, setPage] = useState('tests');
-    const [testShow, setTestShow] = useState({});
+    const [page, setPage] = useState('items');
+    const [itemShow, setItemShow] = useState({});
 
-    function handleClickSave(idtest){
+    function handleClickSave(iditem){
         // start celery
         api
-            .get("http://localhost:8000/api/tests/"+idtest+"/start/")
+            .get("/items/"+iditem+"/start/")
             .catch(err => console.log(err));
-        // show ListTest
-        setPage('tests'); 
+        // show ListItem
+        setPage('items'); 
     }
 
     return(
         <>
-        {(page==='tests') && 
-            <ListTests 
-                handleClickNewTest={()=>setPage('newtest')} 
-                handleClickShowTest={(test)=> {
-                    setPage('showtest');
-                    setTestShow(test);
+        {(page==='items') && 
+            <ListItem 
+                handleClickNewItem={()=>setPage('newitem')} 
+                handleClickShowItem={(item)=> {
+                    setPage('showitem');
+                    setItemShow(item);
                 }} 
             />
         }
-        {(page==='newtest') && 
-            <NewTest 
-                handleClickBack={() => setPage('tests')}
-                handleClickSave={(idtest) => handleClickSave(idtest)}
+        {(page==='newitem') && 
+            <NewItem 
+                handleClickBack={() => setPage('items')}
+                handleClickSave={(iditem) => handleClickSave(iditem)}
             />
         }
-        {(page==='showtest') && 
-            <ShowTest
-                handleClickBack={()=>{setPage('tests')}}
-                test={testShow}
+        {(page==='showitem') && 
+            <ShowItem
+                handleClickBack={()=>{setPage('items')}}
+                item={itemShow}
             /> 
         }
         </>

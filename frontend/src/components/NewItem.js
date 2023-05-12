@@ -8,7 +8,7 @@ import { Gallery } from "react-grid-gallery";
 import ModalAlert from "./ModalAlert";
 import useAxios from '../utils/useAxios';
 
-export default function NewTest({handleClickBack, handleClickSave}){
+export default function NewItem({handleClickBack, handleClickSave}){
 
     const api = useAxios();
 
@@ -102,34 +102,34 @@ export default function NewTest({handleClickBack, handleClickSave}){
         }
 
         // creo test da aggiungere
-        const newTest = {
+        const newItem = {
             "name": `${name}`,
             "description": `${desc}`,
         }
 
-        // chiamata per aggiungere il test
+        // chiamata per aggiungere il nuovo item
         api
-            .post("http://localhost:8000/api/tests/", newTest)
+            .post("/items/", newItem)
             .then(response => {
 
                 // conto immagini selezionate 
                 let cont = 0;
-                files.forEach( (item,index ) => {
+                files.forEach( (elem,index ) => {
                     if(images[index].isSelected){
                         cont = cont+1;
                     }
                 });
 
-                files.forEach( (item, index) => {
+                files.forEach( (elem, index) => {
                     // controllo se l'immagine è selezionata
                     if(images[index].isSelected){
                         let form_data = new FormData();
-                        form_data.append("path_input", item, item.name);
-                        form_data.append("test_id", response.data.id);
+                        form_data.append("path_input", elem, elem.name);
+                        form_data.append("item_id", response.data.id);
                         
                         // chiamata per aggiungere l'immagine (img di output uguale alla rispettiva img di input)
                         api
-                            .post(`http://localhost:8000/api/images/`, form_data, {
+                            .post(`/images/`, form_data, {
                                 headers: {
                                         "Content-Type": "image/jpeg, image/png",
                                 },
@@ -141,11 +141,11 @@ export default function NewTest({handleClickBack, handleClickSave}){
                                 }
                             })
                             .catch(err => {
-                                // se inserimento immagini non va a buon fine, allora cancella il test creato
+                                // se inserimento immagini non va a buon fine, allora cancella l'item creato
                                 console.log(err);
                                 // cancella le eventuali immagini già inserite (politica on delete cascade)
                                 api
-                                .delete(`http://localhost:8000/api/tests/${response.data.id}/`)
+                                .delete(`/items/${response.data.id}/`)
                                 .then(() => {
                                     setErrorImagePost(true);
                                     return;
@@ -168,7 +168,7 @@ export default function NewTest({handleClickBack, handleClickSave}){
                     </h4>
                 </Col>
                 <Col className="text-center my-1">
-                    <HeaderCustomized text={'New test'} />
+                    <HeaderCustomized text={'New item'} />
                 </Col>
                 <Col></Col>
                 </Row>
@@ -203,18 +203,18 @@ export default function NewTest({handleClickBack, handleClickSave}){
                         </FormGroup>
                         <FormGroup>
                             <Label for="images-drop-zone">
-                              Files
+                              Images
                             </Label>  
                             <div {...getRootProps({ className: "dropzone" })}>
                                 <input className="input-zone" {...getInputProps()} />
                                 <div className="text-center drop-zone">
                                 {isDragActive ? (
                                     <p className="dropzone-content ">
-                                    Release to drop the files here
+                                    Release to drop the images here
                                     </p>
                                 ) : (
                                     <p className="dropzone-content ">
-                                    Drag and drop some files here, or click to select files
+                                    Drag and drop some images here, or click to select images
                                     </p>
                                 )}
                                 <Button type='button' outline color='primary'>Browse</Button>
