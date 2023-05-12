@@ -10,7 +10,7 @@ import useAxios from '../utils/useAxios';
 
 import AuthContext from "../context/AuthContext";
 
-export default function ShowTest({handleClickBack, test}){
+export default function ShowItem({handleClickBack, item}){
 
     const { user } = useContext(AuthContext);
     const api = useAxios();
@@ -30,13 +30,13 @@ export default function ShowTest({handleClickBack, test}){
     useEffect(() => {
         // get images 
         api
-            .get("http://localhost:8000/api/images/test/"+test.id+'/')
+            .get("/images/item/"+item.id+'/')
             .then(response => {
                 setImages(response.data);
                 setRefresh(false);
             })
             .catch(err => console.log(err));
-    }, [refresh, test]); 
+    }, [refresh, item]); 
 
     const convert_date = (time) => {
         var newdate = new Date(time).toLocaleDateString();
@@ -54,9 +54,9 @@ export default function ShowTest({handleClickBack, test}){
         return (newdate2 - newdate1)/1000;
     }
 
-    const handleRemoveTest = (id) => {
+    const handleRemoveItem = (id) => {
         api
-            .delete(`http://localhost:8000/api/tests/${id}/`)
+            .delete(`/items/${id}/`)
             .then(response => handleClickBack())
             .catch(err => console.log(err));
     };
@@ -98,14 +98,14 @@ export default function ShowTest({handleClickBack, test}){
         if(!openImages){
             let newImageOpenList = [];
             if(isInput){
-                images.forEach((item) => newImageOpenList.push({
-                    url: `${item.path_input}`,
-                    title: `${item.path_input.split('/')[4]}`,
+                images.forEach((img) => newImageOpenList.push({
+                    url: `${img.path_input}`,
+                    title: `${img.path_input.split('/')[4]}`,
                 })); 
             } else {
-                images.forEach((item) => newImageOpenList.push({
-                    url: `${item.path_output}`,
-                    title: `${item.path_output.split('/')[4]}`,
+                images.forEach((img) => newImageOpenList.push({
+                    url: `${img.path_output}`,
+                    title: `${img.path_output.split('/')[4]}`,
                 }));
             }
              
@@ -125,12 +125,12 @@ export default function ShowTest({handleClickBack, test}){
                     <h4 className="my-4 pointer" onClick={handleClickBack}><IoArrowBackOutline   /></h4>
                 </Col>
                 <Col className="text-center my-1">
-                    <HeaderCustomized text={test.name} />
+                    <HeaderCustomized text={item.name} />
                 </Col>
                 <Col className="text-right my-4">
                     {
-                    (user.username == test.created_by.username) &&
-                    <h5 ><RiDeleteBinLine color="red" className="my-1" onClick={()=>handleRemoveTest(test.id)} style={{cursor:'pointer'}}/></h5>
+                    (user.username == item.created_by.username) &&
+                    <h5 ><RiDeleteBinLine color="red" className="my-1" onClick={()=>handleRemoveItem(item.id)} style={{cursor:'pointer'}}/></h5>
                     }
                 </Col>
                 </Row>
@@ -139,7 +139,7 @@ export default function ShowTest({handleClickBack, test}){
                         <Card>
                         <CardBody>
                             <CardTitle tag='h6'>Description</CardTitle>
-                            <CardSubtitle> {test.description}</CardSubtitle>
+                            <CardSubtitle> {item.description}</CardSubtitle>
                         </CardBody>
                         </Card>
                         
@@ -148,7 +148,7 @@ export default function ShowTest({handleClickBack, test}){
                         <Card>
                         <CardBody>
                             <CardTitle tag='h6'>Created by</CardTitle>
-                            <CardSubtitle> {test.created_by.username}</CardSubtitle>
+                            <CardSubtitle> {item.created_by.username}</CardSubtitle>
                         </CardBody>
                         </Card>
                         
@@ -158,24 +158,24 @@ export default function ShowTest({handleClickBack, test}){
                 <Col>
                     <Card>
                         <CardBody>
-                            <CardTitle tag='h6'>Start date</CardTitle>
-                            <CardSubtitle> {convert_date(test.time_start)}</CardSubtitle>
+                            <CardTitle tag='h6'>Created on</CardTitle>
+                            <CardSubtitle> {convert_date(item.time_start)}</CardSubtitle>
                         </CardBody>
                     </Card>
                     </Col>
                     <Col>
                     <Card>
                         <CardBody>
-                            <CardTitle tag='h6'>Start time</CardTitle>
-                            <CardSubtitle>{convert_time(test.time_start)}</CardSubtitle>
+                            <CardTitle tag='h6'>Created at</CardTitle>
+                            <CardSubtitle>{convert_time(item.time_start)}</CardSubtitle>
                         </CardBody>
                     </Card>
                     </Col>
                     <Col>
                     <Card>
                         <CardBody>
-                            <CardTitle tag='h6'>Time</CardTitle>
-                            <CardSubtitle> {diff_time(test.time_start, test.time_end)} sec </CardSubtitle>
+                            <CardTitle tag='h6'>Processing time</CardTitle>
+                            <CardSubtitle> {diff_time(item.time_start, item.time_end)} sec </CardSubtitle>
                         </CardBody>
                     </Card>
                     </Col>
@@ -183,7 +183,7 @@ export default function ShowTest({handleClickBack, test}){
                     <Card>
                         <CardBody>
                             <CardTitle tag='h6'>Processed Images </CardTitle>
-                            <CardSubtitle> {test.image_count}</CardSubtitle>
+                            <CardSubtitle> {item.image_count}</CardSubtitle>
                         </CardBody>
                     </Card>
                     </Col>

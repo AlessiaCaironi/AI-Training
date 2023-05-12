@@ -12,23 +12,29 @@ export default AuthContext;
 
 // contiene l'intera app
 export const AuthProvider = ({ children }) => {
+  
+  // se nel localStorage sono memorizzati dei token, li salvo in authTokens
   const [authTokens, setAuthTokens] = useState(() =>
     localStorage.getItem("authTokens")
       ? JSON.parse(localStorage.getItem("authTokens"))
       : null
   );
+
+  // se nel localStorage sono memorizzati dei token, li decodifico con jwt_decode
+  // e li salvo nella variabile di stato user
   const [user, setUser] = useState(() =>
     localStorage.getItem("authTokens")
       ? jwt_decode(localStorage.getItem("authTokens"))
       : null
   );
+
   const [loading, setLoading] = useState(true);
 
   const history = useHistory();
 
   // funzione per fare login di un utente ed ottenere i token. 
-  // Se l'utente presente nel db (credenziali valide), allora l'utente è loggato. 
-  // I due token ricevuti (access e refresh) sono salvati nel local storage.
+  // Se l'utente è presente nel db (credenziali valide), allora l'utente è loggato. 
+  // I due token ricevuti (access e refresh) sono salvati nel localStorage
   const loginUser = async (username, password, setErrorLogin) => {
     const response = await fetch("http://127.0.0.1:8000/api/token/", {
       method: "POST",

@@ -6,10 +6,9 @@ import PrivateRoute from "./utils/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./views/loginPage";
 import Register from "./views/registerPage";
-import ProtectedPage from "./views/ProtectedPage";
+import MainCustomized from "./components/MainCustomized";
 
 function App() {
-
 
   return (
     <Router>
@@ -17,7 +16,7 @@ function App() {
         <AuthProvider>
           <NavCustomized />
           <Switch>
-            <PrivateRoute component={ProtectedPage} path="/protected" exact />
+            <PrivateRoute component={MainCustomized} path="/protected" exact />
             <Route component={Login} path="/login" />
             <Route component={Register} path="/register" />
             <Route component={Login} path="/" />

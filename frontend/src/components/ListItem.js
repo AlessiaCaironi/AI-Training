@@ -8,12 +8,12 @@ import useAxios from '../utils/useAxios';
 
 import AuthContext from "../context/AuthContext";
 
-export default function ListTests({handleClickNewTest, handleClickShowTest}){
+export default function ListItems({handleClickNewItem, handleClickShowItem}){
 
     const { user } = useContext(AuthContext);
     const api = useAxios();
 
-    const [tests, setTests] = useState([]);
+    const [items, setItems] = useState([]);
     const [refresh, setRefresh] = useState(true);
 
     // polling 
@@ -22,7 +22,7 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
 
     useEffect(() => {
         api
-        .get("http://localhost:8000/api/tests/")
+        .get("/items/")
         .then(response => {
             // check - at least 1 test 
             if(response.data.length > 0){
@@ -31,10 +31,10 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                 if(last.time_end == null && last.time_start == null){
                     setPolling(true);
                 }
-                setTests(response.data);
+                setItems(response.data);
                 setRefresh(false);
             } else {
-                setTests([]);
+                setItems([]);
                 setRefresh(false);
             }
         })
@@ -44,7 +44,7 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
     // POLLING
     useInterval(
         () => {
-            checkTimeStart(tests[tests.length-1].id)
+            checkTimeStart(items[items.length-1].id)
         },
         // delay in milliseconds or null to stop it
         isPolling ? delay : null,
@@ -53,10 +53,10 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
     // func called during polling
     const checkTimeStart = (id) => {
         api
-            .get("http://localhost:8000/api/tests/"+id+"/")
+            .get("/items/"+id+"/")
             .then((response) => {
-                const item = response.data;
-                if(item.time_end !== null && item.time_start !== null){
+                const res = response.data;
+                if(res.time_end !== null && res.time_start !== null){
                     setPolling(false);
                     // setRefresh(true);
                 }
@@ -79,52 +79,52 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
         return (newdate2 - newdate1)/1000;
     }
 
-    const handleRemoveTest = (id) => {
+    const handleRemoveItem = (id) => {
         api
-            .delete(`http://localhost:8000/api/tests/${id}/`)
+            .delete(`/items/${id}/`)
             .then(response => setRefresh(true))
             .catch(err => console.log(err));
     };
 
-    const list = tests.map((item, index) => (  
+    const list = items.map((elem, index) => (  
         <>
-        <tr key={index}>
+        <tr key={elem.pk}>
             <th scope='row'>
                 {index+1}
             </th> 
             
-            {item.time_start && 
+            {elem.time_start && 
                 <>
-                    <td onClick={()=>handleClickShowTest(item)} className='pointer' style={{textDecoration:'underline'}}>
-                        {item.name}  
+                    <td onClick={()=>handleClickShowItem(elem)} className='pointer' style={{textDecoration:'underline'}}>
+                        {elem.name}  
                     </td>
                     <td>
-                        {item.created_by.username}
+                        {elem.created_by.username}
                     </td>
                     <td>
-                        {item.image_count}
+                        {elem.image_count}
                     </td>
                     <td>
-                        {convert_time(item.time_start)}                        
+                        {convert_time(elem.time_start)}                        
                     </td>
                     <td>
-                        {diff_time(item.time_start, item.time_end)} sec   
+                        {diff_time(elem.time_start, elem.time_end)} sec   
                     </td>
                     <td>
                         {
-                        (user.username == item.created_by.username) &&
-                        <RiDeleteBinLine color="red" onClick={()=>handleRemoveTest(item.id)} className='pointer'/>
+                        (user.username == elem.created_by.username) &&
+                        <RiDeleteBinLine color="red" onClick={()=>handleRemoveItem(elem.id)} className='pointer'key={index}/>
                         }
                     </td> 
                 </>
             }
-            { item.time_start==null &&
+            { elem.time_start==null &&
                 <>
                     <td>
-                        {item.name}
+                        {elem.name}
                     </td>
                     <td>
-                        {item.created_by.username}
+                        {elem.created_by.username}
                     </td>
                     <td><Spinner color='primary' size='sm'></Spinner></td>
                     <td></td>
@@ -139,25 +139,25 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
     return(
         <>
             <Container>
-            <Row>
-                <Col></Col>
-                <Col className="text-center my-1">
-                    <HeaderCustomized text={'Tests'}/>
+            <Row key='titolo'>
+                <Col key='titolo_c1'></Col>
+                <Col className="text-center my-1" key='titolo_c2'>
+                    <HeaderCustomized text={'Dataset'}/>
                 </Col>
-                <Col className="text-right my-4">
+                <Col className="text-right my-4" key='titolo_c3'>
                     <Button
                         color="primary"
                         outline
-                        onClick={handleClickNewTest}
+                        onClick={handleClickNewItem}
                     >
-                        New test
+                        New item
                     </Button>
                 </Col>
             </Row>
-            <Row className="my-1">
+            <Row className="my-1" key='tabella'>
                 <Table>
                 <thead>
-                    <tr>
+                    <tr id='tabella_intestazione'>
                         <th></th>
                         <th>
                             Name
@@ -169,10 +169,10 @@ export default function ListTests({handleClickNewTest, handleClickShowTest}){
                             Images
                         </th>
                         <th>
-                            Start
+                            Created on
                         </th>
                         <th>
-                            Time
+                            Processing time
                         </th>
                         <th>
                         </th>
