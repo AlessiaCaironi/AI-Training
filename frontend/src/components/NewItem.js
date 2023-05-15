@@ -21,6 +21,7 @@ export default function NewItem({handleClickBack, handleClickSave}){
     // show modal if image's post request fails (es. insert html code in file with .png extension)
     const [errorImagePost, setErrorImagePost ] = useState(false); 
     const [images, setImages] = useState([]);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -100,6 +101,8 @@ export default function NewItem({handleClickBack, handleClickSave}){
             setImageMissing(true);
             return
         }
+
+        setButtonDisabled(true);
 
         // creo test da aggiungere
         const newItem = {
@@ -234,6 +237,7 @@ export default function NewItem({handleClickBack, handleClickSave}){
                             color="primary"
                             outline
                             onClick={handleStart}
+                            disabled={buttonDisabled}
                         >
                             Start
                         </Button>

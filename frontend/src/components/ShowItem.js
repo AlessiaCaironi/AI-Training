@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext}  from "react";
-import { Container, Row, Col, Card, CardTitle, CardBody, CardSubtitle, CardImg, CardHeader } from "reactstrap";
+import { Container, Row, Col, Card, CardTitle, CardBody, CardSubtitle, CardImg, CardHeader, Tooltip } from "reactstrap";
 import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import {AiOutlineClose, AiOutlineZoomIn} from 'react-icons/ai'
 import { RiDeleteBinLine } from 'react-icons/ri';
@@ -7,6 +7,7 @@ import HeaderCustomized from "./HeaderCustomized";
 import "react-awesome-lightbox/build/style.css";
 import Lightbox from 'react-awesome-lightbox';
 import useAxios from '../utils/useAxios';
+import ModalConfirmDelete from "./ModalConfirmDelete";
 
 import AuthContext from "../context/AuthContext";
 
@@ -26,6 +27,12 @@ export default function ShowItem({handleClickBack, item}){
     // compare images
     const [showZoom, setShowZoom] = useState(false);
     const [imgZoom, setImgZoom] = useState(null);    
+
+    // confirm delete item
+    const [showConfirm, setShowConfirm] = useState(false);
+
+    // email tooltip 
+    const [toolTipOpen, setToolTipOpen] = useState(false);
     
     useEffect(() => {
         // get images 
@@ -53,13 +60,6 @@ export default function ShowItem({handleClickBack, item}){
         const newdate2 = new Date(time2).getTime();
         return (newdate2 - newdate1)/1000;
     }
-
-    const handleRemoveItem = (id) => {
-        api
-            .delete(`/items/${id}/`)
-            .then(response => handleClickBack())
-            .catch(err => console.log(err));
-    };
 
     const listCards = images.map((img, index) => 
         <>
@@ -130,7 +130,14 @@ export default function ShowItem({handleClickBack, item}){
                 <Col className="text-right my-4">
                     {
                     (user.username == item.created_by.username) &&
-                    <h5 ><RiDeleteBinLine color="red" className="my-1" onClick={()=>handleRemoveItem(item.id)} style={{cursor:'pointer'}}/></h5>
+                    <h5>
+                        <RiDeleteBinLine 
+                            color="red" 
+                            className="my-1" 
+                            onClick={()=>setShowConfirm(true)} 
+                            style={{cursor:'pointer'}}
+                        />
+                    </h5>
                     }
                 </Col>
                 </Row>
@@ -148,7 +155,19 @@ export default function ShowItem({handleClickBack, item}){
                         <Card>
                         <CardBody>
                             <CardTitle tag='h6'>Created by</CardTitle>
-                            <CardSubtitle> {item.created_by.username}</CardSubtitle>
+                            <CardSubtitle> 
+                                <span id="TooltipEmail" className="pointer">
+                                    {item.created_by.username}
+                                </span>
+                                <Tooltip 
+                                    isOpen={toolTipOpen}
+                                    target="TooltipEmail"
+                                    toggle={()=>setToolTipOpen(!toolTipOpen)}
+                                    placement="right"
+                                >
+                                    {item.created_by.email}
+                                </Tooltip>
+                            </CardSubtitle>
                         </CardBody>
                         </Card>
                         
@@ -232,7 +251,16 @@ export default function ShowItem({handleClickBack, item}){
                 images={imageOpenList}
                 onClose={() => setOpenImages(!openImages)} 
                 startIndex={startOpenIndex}
-            ></Lightbox>}
+            ></Lightbox>
+        }
+        {showConfirm ?
+            <ModalConfirmDelete 
+                setShowConfirm={setShowConfirm} 
+                item_id={item.id} 
+                handleClickBack={handleClickBack}
+            />
+            : null
+        }
         </>
     );
 }

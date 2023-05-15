@@ -5,6 +5,8 @@ import { Table, Button, Container, Row, Col, Spinner } from "reactstrap";
 import { RiDeleteBinLine } from 'react-icons/ri';
 import useInterval from 'use-interval';
 import useAxios from '../utils/useAxios';
+import ModalConfirmDelete from "./ModalConfirmDelete";
+
 
 import AuthContext from "../context/AuthContext";
 
@@ -19,6 +21,10 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
     // polling 
     const [delay, setDelay] = useState(1000);
     const [isPolling, setPolling] = useState(false);
+
+    // confirm delete item
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [itemDeleteId, setItemDeleteId] = useState(null);
 
     useEffect(() => {
         api
@@ -80,10 +86,8 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
     }
 
     const handleRemoveItem = (id) => {
-        api
-            .delete(`/items/${id}/`)
-            .then(response => setRefresh(true))
-            .catch(err => console.log(err));
+        setItemDeleteId(id);
+        setShowConfirm(true);
     };
 
     const list = items.map((elem, index) => (  
@@ -113,7 +117,12 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                     <td>
                         {
                         (user.username == elem.created_by.username) &&
-                        <RiDeleteBinLine color="red" onClick={()=>handleRemoveItem(elem.id)} className='pointer'key={index}/>
+                            <RiDeleteBinLine 
+                                color="red" 
+                                onClick={()=>handleRemoveItem(elem.id)} 
+                                className='pointer'
+                                key={index}
+                            />
                         }
                     </td> 
                 </>
@@ -184,6 +193,14 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                 </Table>
             </Row>
         </Container>
+        {showConfirm ?
+            <ModalConfirmDelete 
+                setShowConfirm={setShowConfirm} 
+                item_id={itemDeleteId} 
+                handleClickBack={()=>setRefresh(true)}
+            />
+            : null
+        }
         </>
     );
 }
