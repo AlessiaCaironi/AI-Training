@@ -28,16 +28,7 @@ Create a file .env with the SECRET_KEY
 
 Install
 ```
-pip install python-decouple
-pip install django-cors-headers
-pip install djangorestframework-simplejwt
-pip install django-cleanup
-pip install django-celery-results
-pip install django-userforeignkey
-pip install django-debug-toolbar
-pip install Pillow
-pip install celery
-pip install Redis
+pip install -r requirements.txt
 ```
 
 Sync the database
