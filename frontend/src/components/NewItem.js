@@ -76,7 +76,7 @@ export default function NewItem({handleClickBack, handleClickSave}){
     }, [files]);
 
 
-    const handleStart = () =>{
+    const handleAdd = () =>{
 
         // check if name is valid
         if(name===''){
@@ -236,10 +236,10 @@ export default function NewItem({handleClickBack, handleClickSave}){
                         <Button
                             color="primary"
                             outline
-                            onClick={handleStart}
+                            onClick={handleAdd}
                             disabled={buttonDisabled}
                         >
-                            Start
+                            Add
                         </Button>
                     </Col>
                 </Row>
