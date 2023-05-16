@@ -7,6 +7,7 @@ import { IoArrowBackOutline } from 'react-icons/io5';
 import { Gallery } from "react-grid-gallery";
 import ModalAlert from "./ModalAlert";
 import useAxios from '../utils/useAxios';
+import IconButton from "@mui/material/IconButton";
 
 export default function NewItem({handleClickBack, handleClickSave}){
 
@@ -166,11 +167,15 @@ export default function NewItem({handleClickBack, handleClickSave}){
             <Container>
                 <Row>
                 <Col>
-                    <h4 onClick={handleClickBack} className="my-4 pointer">
-                        <IoArrowBackOutline />
-                    </h4>
+                    <IconButton 
+                        className="my-3" 
+                        color="primary" 
+                        style={{margin:0}} 
+                        onClick={handleClickBack}>
+                            <IoArrowBackOutline />
+                    </IconButton>
                 </Col>
-                <Col className="text-center my-1">
+                <Col className="text-center">
                     <HeaderCustomized text={'New item'} />
                 </Col>
                 <Col></Col>

@@ -1,13 +1,17 @@
 import React, {useState, useEffect, useContext}  from "react";
-import { Container, Row, Col, Card, CardTitle, CardBody, CardSubtitle, CardImg, CardHeader, Tooltip } from "reactstrap";
+import { Container, Row, Col, Card, CardTitle, CardBody, CardSubtitle, CardImg, CardHeader, Tooltip, Input } from "reactstrap";
 import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import {AiOutlineClose, AiOutlineZoomIn} from 'react-icons/ai'
-import { RiDeleteBinLine } from 'react-icons/ri';
 import HeaderCustomized from "./HeaderCustomized";
 import "react-awesome-lightbox/build/style.css";
 import Lightbox from 'react-awesome-lightbox';
 import useAxios from '../utils/useAxios';
 import ModalConfirmDelete from "./ModalConfirmDelete";
+import {MdModeEdit} from "react-icons/md"
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {FiCheck} from "react-icons/fi";
+import EditIcon from "@mui/icons-material/Edit";
 
 import AuthContext from "../context/AuthContext";
 
@@ -33,6 +37,27 @@ export default function ShowItem({handleClickBack, item}){
 
     // email tooltip 
     const [toolTipOpen, setToolTipOpen] = useState(false);
+
+    // show input e button per modifica descrizione
+    const [showChangeDesc, setShowChangeDesc] = useState(false);
+    const [desc, setDesc] = useState(item.description);
+    
+
+    const handleDescChange = (e) => {
+        setDesc(e.target.value);
+    }
+
+    const handleConfirmDesc = (e) => {
+        api 
+            .put(`/items/${item.id}/`, {
+                id: `${item.id}`,
+                name: `${item.name}`, 
+                description: `${desc}`,
+            })
+            .then()
+            .catch(err => console.log(err));
+        setShowChangeDesc(!showChangeDesc);
+    }
     
     useEffect(() => {
         // get images 
@@ -122,22 +147,24 @@ export default function ShowItem({handleClickBack, item}){
                 <>
                 <Row>
                 <Col>
-                    <h4 className="my-4 pointer" onClick={handleClickBack}><IoArrowBackOutline   /></h4>
+                    <IconButton className="my-3" color="primary" style={{margin:0}} onClick={handleClickBack}>
+                        <IoArrowBackOutline />
+                    </IconButton>
                 </Col>
-                <Col className="text-center my-1">
+                <Col className="text-center my">
                     <HeaderCustomized text={item.name} />
                 </Col>
-                <Col className="text-right my-4">
+                <Col className="text-right my-3">
                     {
                     (user.username == item.created_by.username) &&
-                    <h5>
-                        <RiDeleteBinLine 
-                            color="red" 
-                            className="my-1" 
-                            onClick={()=>setShowConfirm(true)} 
-                            style={{cursor:'pointer'}}
-                        />
-                    </h5>
+                        <>
+                        <IconButton size='small' color='error' onClick={()=>setShowConfirm(true)}>
+                            <DeleteIcon
+                                className="my-1" 
+                                fontSize="inherit"
+                            />
+                        </IconButton>
+                        </>
                     }
                 </Col>
                 </Row>
@@ -145,8 +172,46 @@ export default function ShowItem({handleClickBack, item}){
                     <Col className="col-9">
                         <Card>
                         <CardBody>
-                            <CardTitle tag='h6'>Description</CardTitle>
-                            <CardSubtitle> {item.description}</CardSubtitle>
+                            <CardTitle tag='h6'>                                
+                                <Row>
+                                    <Col>Description</Col>
+                                    <Col className="text-right" >
+                                        {!showChangeDesc &&
+                                            <IconButton 
+                                                size='small' 
+                                                color='primary' 
+                                                style={{margin:0}} 
+                                                onClick={() => setShowChangeDesc(!showChangeDesc)}>
+                                                    <EditIcon     
+                                                        fontSize="inherit"
+                                                    />
+                                            </IconButton>
+                                        }
+                                        {showChangeDesc &&
+                                            <IconButton 
+                                                size='small' 
+                                                color='primary' 
+                                                style={{margin:0}} 
+                                                onClick={handleConfirmDesc}>
+                                                <FiCheck />
+                                            </IconButton>
+                                        }
+                                    </Col>
+                                </Row>                                                                
+                            </CardTitle>
+                            {!showChangeDesc && 
+                                <CardSubtitle> {desc}</CardSubtitle>                            
+                            }
+                            {showChangeDesc &&
+                                <>                                
+                                    <Input 
+                                        type="textarea"
+                                        id="descrition" 
+                                        value={desc} 
+                                        onChange={handleDescChange}
+                                    />                                
+                                </>
+                            }
                         </CardBody>
                         </Card>
                         
@@ -154,8 +219,8 @@ export default function ShowItem({handleClickBack, item}){
                     <Col className="col-3">
                         <Card>
                         <CardBody>
-                            <CardTitle tag='h6'>Created by</CardTitle>
-                            <CardSubtitle> 
+                            <CardTitle tag='h6' className="mb-2">Created by</CardTitle>
+                            <CardSubtitle className="mt-3"> 
                                 <span id="TooltipEmail" className="pointer">
                                     {item.created_by.username}
                                 </span>

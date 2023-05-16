@@ -2,11 +2,12 @@ import '../App.css';
 import React, {useState, useEffect, useContext } from "react";
 import HeaderCustomized from "./HeaderCustomized";
 import { Table, Button, Container, Row, Col, Spinner } from "reactstrap";
-import { RiDeleteBinLine } from 'react-icons/ri';
 import useInterval from 'use-interval';
 import useAxios from '../utils/useAxios';
 import ModalConfirmDelete from "./ModalConfirmDelete";
-
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 
 import AuthContext from "../context/AuthContext";
 
@@ -117,12 +118,15 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                     <td>
                         {
                         (user.username == elem.created_by.username) &&
-                            <RiDeleteBinLine 
-                                color="red" 
-                                onClick={()=>handleRemoveItem(elem.id)} 
-                                className='pointer'
-                                key={index}
-                            />
+                            <>
+                                <IconButton size='small' color='error' onClick={()=>handleRemoveItem(elem.id)}>
+                                    <DeleteIcon                                          
+                                        key={index}
+                                        fontSize="inherit"
+                                    />
+                                </IconButton>
+                            </>
+                            
                         }
                     </td> 
                 </>
@@ -150,17 +154,15 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
             <Container>
             <Row key='titolo'>
                 <Col key='titolo_c1'></Col>
-                <Col className="text-center my-1" key='titolo_c2'>
+                <Col className="text-center" key='titolo_c2'>
                     <HeaderCustomized text={'Dataset'}/>
                 </Col>
-                <Col className="text-right my-4" key='titolo_c3'>
-                    <Button
-                        color="primary"
-                        outline
-                        onClick={handleClickNewItem}
-                    >
-                        New item
-                    </Button>
+                <Col className="text-right my-3" key='titolo_c3'>
+                    <IconButton color='primary' style={{margin:0}} onClick={handleClickNewItem}>
+                        <AddIcon                             
+                            fontSize="inherit"
+                        />
+                        </IconButton>
                 </Col>
             </Row>
             <Row className="my-1" key='tabella'>
