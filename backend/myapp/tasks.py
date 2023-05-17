@@ -1,12 +1,9 @@
 from celery import shared_task
-from .models import Image
-from .models import Item
-import PIL
+from .models import Image, Item
+import sys, datetime, PIL
 from PIL import ImageEnhance
 from io import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
-import sys
-import datetime 
+from django.core.files.uploadedfile import InMemoryUploadedFile  
 
 @shared_task(bind=True)
 def preprocessing_img(self, itemid, *args, **kwargs):

@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import Item
-from .models import Image
+from .models import Item, Image
 
 # autenticazione
 from django.contrib.auth.models import User

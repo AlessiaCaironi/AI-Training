@@ -1,4 +1,4 @@
-import React, {useContext, useState } from 'react';
+import React, {useContext } from 'react';
 import { Link } from "react-router-dom";
 import { 
   Navbar,
@@ -10,8 +10,7 @@ import {
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
-  Button,
- } from 'reactstrap'
+} from 'reactstrap'
  import {FaBrain} from "react-icons/fa"
  import AuthContext from "../context/AuthContext";
  import Avatar from '@mui/material/Avatar';

@@ -1,12 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from django.core.serializers import serialize
-import json
+from django.http import HttpResponse
 from rest_framework import viewsets
-from .serializers import ItemSerializer
-from .serializers import ImageSerializer
-from .models import Item
-from .models import Image
+from .serializers import ItemSerializer, ImageSerializer
+from .models import Item, Image
 from .tasks import preprocessing_img
 from rest_framework import generics
 

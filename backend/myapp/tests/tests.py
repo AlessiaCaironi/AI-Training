@@ -1,13 +1,10 @@
 from django.test import TestCase
-from myapp.models import Item
-from myapp.models import Image
+from myapp.models import Item, Image
 from myapp.tasks import preprocessing_img
-
 from io import BytesIO
 import PIL
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
-
 
 class TaskTestCase(TestCase):
 
@@ -48,10 +45,12 @@ class TaskTestCase(TestCase):
         self.assertIsNotNone(self.new_image.path_output)
 
         # nome file in path_input e nome file in path_output corrispondono
-        self.assertEqual(self.new_image.path_input.name.split('/')[1], self.new_image.path_output.name.split('/')[1])
+        self.assertEqual(self.new_image.path_input.name.split('/')[1], 
+                         self.new_image.path_output.name.split('/')[1])
         
         # check riferimento item id
-        self.assertEqual(self.item_with_imgs.pk, self.new_image.item_id.pk)
+        self.assertEqual(self.item_with_imgs.pk, 
+                         self.new_image.item_id.pk)
         
     
     def test_task__not_ok(self):

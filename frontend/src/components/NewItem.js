@@ -80,13 +80,13 @@ export default function NewItem({handleClickBack, handleClickSave}){
     const handleAdd = () =>{
 
         // check if name is valid
-        if(name===''){
+        if(name.trim()===''){
             setNameMissing(true);
             return
         }
 
         // check if description is valid
-        if(desc===''){
+        if(desc.trim()===''){
             setDescMissing(true);
             return
         }
@@ -195,7 +195,7 @@ export default function NewItem({handleClickBack, handleClickSave}){
                                 maxLength='50'
                             />  
                         </FormGroup>
-                        <FormGroup className="my-4">
+                        <FormGroup className="my-3">
                             <Label for="decsription">
                                 Description
                             </Label>
@@ -213,15 +213,15 @@ export default function NewItem({handleClickBack, handleClickSave}){
                             <Label for="images-drop-zone">
                               Images
                             </Label>  
-                            <div {...getRootProps({ className: "dropzone" })}>
+                            <div {...getRootProps({ className: "dropzone pointer" })}>
                                 <input className="input-zone" {...getInputProps()} />
                                 <div className="text-center drop-zone">
                                 {isDragActive ? (
-                                    <p className="dropzone-content ">
+                                    <p className="dropzone-content font-weight-light" style={{color:'black'}}>
                                     Release to drop the images here
                                     </p>
                                 ) : (
-                                    <p className="dropzone-content ">
+                                    <p className="dropzone-content font-weight-light" style={{color:'black'}}>
                                     Drag and drop some images here, or click to select images
                                     </p>
                                 )}

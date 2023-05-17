@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Item
-from .models import Image
+from .models import Item, Image
 
 class ItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'time_start', 'time_end', 'created_by')

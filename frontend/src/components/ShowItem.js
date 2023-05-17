@@ -7,7 +7,6 @@ import "react-awesome-lightbox/build/style.css";
 import Lightbox from 'react-awesome-lightbox';
 import useAxios from '../utils/useAxios';
 import ModalConfirmDelete from "./ModalConfirmDelete";
-import {MdModeEdit} from "react-icons/md"
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {FiCheck} from "react-icons/fi";
