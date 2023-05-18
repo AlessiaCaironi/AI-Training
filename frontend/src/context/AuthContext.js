@@ -12,6 +12,11 @@ export default AuthContext;
 
 // contiene l'intera app
 export const AuthProvider = ({ children }) => {
+
+  const [baseURL, setBaseURL] = useState(
+    (process.env.NODE_ENV === 'development') ? 
+    "http://127.0.0.1:8000/api" : 
+    "/api");
   
   // se nel localStorage sono memorizzati dei token, li salvo in authTokens
   const [authTokens, setAuthTokens] = useState(() =>
@@ -36,7 +41,8 @@ export const AuthProvider = ({ children }) => {
   // Se l'utente è presente nel db (credenziali valide), allora l'utente è loggato. 
   // I due token ricevuti (access e refresh) sono salvati nel localStorage
   const loginUser = async (username, password, setErrorLogin) => {
-    const response = await fetch("http://127.0.0.1:8000/api/token/", {
+    
+    const response = await fetch(`${baseURL}/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -61,7 +67,8 @@ export const AuthProvider = ({ children }) => {
   // funzione per registrare un nuovo utente nel db.
   // se la registrazione ha successo, l'utente viene reindirizzato alla pagina di login.
   const registerUser = async (username, email, password, password2, setErrorRegister) => {
-    const response = await fetch("http://127.0.0.1:8000/api/register/", {
+   
+    const response = await fetch(`${baseURL}/register/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -95,7 +102,8 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    baseURL
   };
 
   useEffect(() => {

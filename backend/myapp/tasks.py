@@ -33,7 +33,7 @@ def preprocessing_img(self, itemid, *args, **kwargs):
                 extension = 'jpg'
 
             # after modifications, save it to the output
-            img.save(output, format=img_format, quality=100)
+            img.save(output, format=img_format, quality=80)
             output.seek(0)
                 
             # change the path_output value to be the newley modified image value

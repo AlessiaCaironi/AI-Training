@@ -14,7 +14,8 @@ import {
  import {FaBrain} from "react-icons/fa"
  import AuthContext from "../context/AuthContext";
  import Avatar from '@mui/material/Avatar';
- import {TbLogout} from "react-icons/tb"
+ import LogoutIcon from '@mui/icons-material/Logout';
+ import { IconButton } from '@mui/material';
 
 const NavCustomized = () => {
 
@@ -44,8 +45,11 @@ const NavCustomized = () => {
                     <DropdownItem text size='2' className='mb-2'>
                       {user.email}
                     </DropdownItem>
-                    <DropdownItem style={{textAlign: 'center'}} onClick={logoutUser}>
-                      <TbLogout className='mb-1 mr-1'/>  Logout
+                    <DropdownItem style={{textAlign: 'center'}} onClick={logoutUser} >
+                      <IconButton size='small' color='error' style={{padding:0}}>
+                        <LogoutIcon fontSize="inherit" className="mr-2 mb-1"/>
+                      </IconButton>
+                      Logout
                     </DropdownItem>
                    </DropdownMenu>
                 </UncontrolledDropdown>
