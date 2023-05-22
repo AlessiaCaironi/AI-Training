@@ -11,6 +11,8 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {FiCheck} from "react-icons/fi";
 import EditIcon from "@mui/icons-material/Edit";
+import ModalAlert from "./ModalAlert";
+
 
 import AuthContext from "../context/AuthContext";
 
@@ -40,13 +42,21 @@ export default function ShowItem({handleClickBack, item}){
     // show input e button per modifica descrizione
     const [showChangeDesc, setShowChangeDesc] = useState(false);
     const [desc, setDesc] = useState(item.description);
-    
+    const [descMissing, setDescMissing] = useState(false);
 
     const handleDescChange = (e) => {
         setDesc(e.target.value);
     }
 
     const handleConfirmDesc = (e) => {
+
+        // check if description is valid
+        if(desc.trim()===''){
+            setDescMissing(true);
+            setDesc(item.description);
+            return
+        }
+
         api 
             .put(`/items/${item.id}/`, {
                 id: `${item.id}`,
@@ -101,14 +111,14 @@ export default function ShowItem({handleClickBack, item}){
                 <CardBody>
                     <CardImg 
                         src={img.path_input} 
-                        className="mx-1" 
+                        className="mx-1 pointer" 
                         style={{width:'230px'}}
                         onClick={() => handleOpenImages(index, true)}
                     />
                     <IoArrowForwardOutline/>
                     <CardImg 
                         src={img.path_output} 
-                        className="mx-1" 
+                        className="mx-1 pointer" 
                         style={{width:'230px'}}
                         onClick={() => handleOpenImages(index, false)}
                     />
@@ -173,9 +183,9 @@ export default function ShowItem({handleClickBack, item}){
                         <CardBody>
                             <CardTitle tag='h6'>                                
                                 <Row>
-                                    <Col>Description</Col>
+                                    <Col >Description</Col>
                                     <Col className="text-right" >
-                                        {!showChangeDesc &&
+                                        {(!showChangeDesc && (user.username == item.created_by.username)) &&
                                             <IconButton 
                                                 size='small' 
                                                 color='primary' 
@@ -186,7 +196,7 @@ export default function ShowItem({handleClickBack, item}){
                                                     />
                                             </IconButton>
                                         }
-                                        {showChangeDesc &&
+                                        {(showChangeDesc && (user.username == item.created_by.username)) &&
                                             <IconButton 
                                                 size='small' 
                                                 color='primary' 
@@ -218,8 +228,8 @@ export default function ShowItem({handleClickBack, item}){
                     <Col className="col-3">
                         <Card>
                         <CardBody>
-                            <CardTitle tag='h6' className="mb-2">Created by</CardTitle>
-                            <CardSubtitle className="mt-3"> 
+                            <CardTitle tag='h6'>Created by</CardTitle>
+                            <CardSubtitle > 
                                 <span id="TooltipEmail" className="pointer">
                                     {item.created_by.username}
                                 </span>
@@ -323,6 +333,10 @@ export default function ShowItem({handleClickBack, item}){
                 item_id={item.id} 
                 handleClickBack={handleClickBack}
             />
+            : null
+        }
+        {descMissing ? 
+            <ModalAlert setShowAlert={setDescMissing} msgAlert={'Description required'}/>
             : null
         }
         </>

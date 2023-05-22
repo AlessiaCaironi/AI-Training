@@ -1,7 +1,7 @@
 import '../App.css';
 import React, {useState, useEffect, useContext } from "react";
 import HeaderCustomized from "./HeaderCustomized";
-import { Table, Button, Container, Row, Col, Spinner } from "reactstrap";
+import { Table, Container, Row, Col, Spinner } from "reactstrap";
 import useInterval from 'use-interval';
 import useAxios from '../utils/useAxios';
 import ModalConfirmDelete from "./ModalConfirmDelete";
@@ -93,26 +93,26 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
 
     const list = items.map((elem, index) => (  
         <>
-        <tr key={elem.pk}>
-            <th scope='row'>
+        <tr key={elem.pk} >
+            <th scope='row' onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
                 {index+1}
             </th> 
             
             {elem.time_start && 
                 <>
-                    <td onClick={()=>handleClickShowItem(elem)} className='pointer' style={{textDecoration:'underline'}}>
+                    <td onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
                         {elem.name}  
                     </td>
-                    <td>
+                    <td onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
                         {elem.created_by.username}
                     </td>
-                    <td>
+                    <td onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
                         {elem.image_count}
                     </td>
-                    <td>
+                    <td onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
                         {convert_time(elem.time_start)}                        
                     </td>
-                    <td>
+                    <td onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
                         {diff_time(elem.time_start, elem.time_end)} sec   
                     </td>
                     <td>
@@ -166,7 +166,7 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                 </Col>
             </Row>
             <Row className="my-1" key='tabella'>
-                <Table>
+                <Table hover>
                 <thead>
                     <tr id='tabella_intestazione'>
                         <th></th>
