@@ -151,7 +151,7 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
 
     return(
         <>
-            <Container>
+            <Container >
             <Row key='titolo'>
                 <Col key='titolo_c1'></Col>
                 <Col className="text-center" key='titolo_c2'>
@@ -195,6 +195,7 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                 </Table>
             </Row>
         </Container>
+        
         {showConfirm ?
             <ModalConfirmDelete 
                 setShowConfirm={setShowConfirm} 

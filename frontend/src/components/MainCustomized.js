@@ -29,6 +29,7 @@ export default function MainCustomized(){
                     setPage('showitem');
                     setItemShow(item);
                 }} 
+                style={{height:'100%'}}
             />
         }
         {(page==='newitem') && 
@@ -43,6 +44,7 @@ export default function MainCustomized(){
                 item={itemShow}
             /> 
         }
+       
         </>
     );
 }

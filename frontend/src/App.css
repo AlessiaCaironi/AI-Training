@@ -12,3 +12,15 @@
   cursor: pointer;
   color: rgb(2, 117, 216);
 }
+
+.foot {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-top: 50%;
+}
+
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
