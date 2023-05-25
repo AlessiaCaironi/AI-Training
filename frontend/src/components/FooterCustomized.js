@@ -12,10 +12,7 @@ export default function FooterCustomized(){
             <Container>
                 <Row>
                     <Col className="text-left my-3">
-                        Created by 
-                        <a href="https://www.linkedin.com/in/alessia-caironi" target="_blank">
-                            @AlessiaCaironi
-                        </a>
+                        Created by <a href="https://www.linkedin.com/in/alessia-caironi" target="_blank"> @AlessiaCaironi</a>
                     </Col>
                     <Col>
                     </Col>
@@ -25,7 +22,7 @@ export default function FooterCustomized(){
                             fontSize="inherit"
                         />
                         </IconButton>
-                        <IconButton style={{color:'black'}}>
+                        <IconButton style={{color:'black'}} href="https://www.slides.aitraining.ovh/">
                         <CoPresentIcon                             
                             fontSize="inherit"
                         />
