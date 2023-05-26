@@ -22,7 +22,7 @@ export default function FooterCustomized(){
                             fontSize="inherit"
                         />
                         </IconButton>
-                        <IconButton style={{color:'black'}} href="https://www.slides.aitraining.ovh/">
+                        <IconButton style={{color:'black'}} href="https://www.slides.aitraining.ovh/" target="_blank">
                         <CoPresentIcon                             
                             fontSize="inherit"
                         />

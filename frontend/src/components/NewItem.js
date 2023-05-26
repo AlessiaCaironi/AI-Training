@@ -236,7 +236,7 @@ export default function NewItem({handleClickBack, handleClickSave}){
                         </FormGroup>
                     </Form>
                 </Row>
-                <Row className="my-2">
+                <Row className="mb-4">
                     <Col className="text-right">
                         <Button
                             color="primary"

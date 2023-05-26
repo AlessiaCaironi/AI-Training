@@ -94,12 +94,12 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
     const list = items.map((elem, index) => (  
         <>
         <tr key={elem.pk} >
-            <th scope='row' onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
-                {index+1}
-            </th> 
             
             {elem.time_start && 
                 <>
+                    <th scope='row' onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
+                        {index+1}
+                    </th> 
                     <td onClick={()=>handleClickShowItem(elem)} style={{color:'black'}} className='pointer'>
                         {elem.name}  
                     </td>
@@ -133,6 +133,9 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
             }
             { elem.time_start==null &&
                 <>
+                    <th scope='row'>
+                        {index+1}
+                    </th> 
                     <td>
                         {elem.name}
                     </td>
@@ -140,6 +143,7 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                         {elem.created_by.username}
                     </td>
                     <td><Spinner color='primary' size='sm'></Spinner></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </>   
