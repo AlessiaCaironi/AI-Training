@@ -12,6 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {FiCheck} from "react-icons/fi";
 import EditIcon from "@mui/icons-material/Edit";
 import ModalAlert from "./ModalAlert";
+import {ImFolderDownload} from "react-icons/im"
 
 
 import AuthContext from "../context/AuthContext";
@@ -175,6 +176,12 @@ export default function ShowItem({handleClickBack, item}){
                         </IconButton>
                         </>
                     }
+                    <IconButton size='small' color='error'>
+                            <ImFolderDownload
+                                className="my-1" 
+                                fontSize="inherit"
+                            />
+                    </IconButton>
                 </Col>
                 </Row>
                 <Row className="mb-4 mt-1">

@@ -8,6 +8,7 @@ import ModalConfirmDelete from "./ModalConfirmDelete";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import {ImFolderDownload} from "react-icons/im"
 
 import AuthContext from "../context/AuthContext";
 
@@ -116,6 +117,14 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                         {diff_time(elem.time_start, elem.time_end)} sec   
                     </td>
                     <td>
+                        <IconButton size='small' color='primary'>
+                            <ImFolderDownload                                          
+                                key={index}
+                                fontSize="inheriindext"
+                            />
+                        </IconButton>                          
+                    </td>
+                    <td>
                         {
                         (user.username == elem.created_by.username) &&
                             <>
@@ -143,6 +152,7 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                         {elem.created_by.username}
                     </td>
                     <td><Spinner color='primary' size='sm'></Spinner></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -188,6 +198,8 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                         </th>
                         <th>
                             Processing time
+                        </th>
+                        <th>
                         </th>
                         <th>
                         </th>
