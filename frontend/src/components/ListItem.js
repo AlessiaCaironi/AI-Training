@@ -8,7 +8,8 @@ import ModalConfirmDelete from "./ModalConfirmDelete";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import {ImFolderDownload} from "react-icons/im"
+import {ImFolderDownload} from "react-icons/im";
+import saveAs from "file-saver";
 
 import AuthContext from "../context/AuthContext";
 
@@ -92,6 +93,25 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
         setShowConfirm(true);
     };
 
+    async function fetchBlob(url){
+        const response = await fetch(url.replace('http', 'https'));
+        return response.blob();
+    }
+
+    const downloadZip = (pk, name) => {
+        const zip = require('jszip')();
+        api
+            .get("/images/item/"+pk+'/')
+            .then(response => {                
+                response.data.forEach((img, index) => { 
+                    zip.file(`${name}_${index+1}.jpg`, fetchBlob(img.path_output));                                        
+                });
+                zip.generateAsync({type: "blob"}).then(content => {
+                    saveAs(content, `${name}.zip`);
+                });
+            });
+    }
+
     const list = items.map((elem, index) => (  
         <>
         <tr key={elem.pk} >
@@ -117,10 +137,10 @@ export default function ListItems({handleClickNewItem, handleClickShowItem}){
                         {diff_time(elem.time_start, elem.time_end)} sec   
                     </td>
                     <td>
-                        <IconButton size='small' color='primary'>
+                        <IconButton size='small' color='primary' onClick={()=>downloadZip(elem.id, elem.name)}>
                             <ImFolderDownload                                          
                                 key={index}
-                                fontSize="inheriindext"
+                                fontSize="inheriindext"                               
                             />
                         </IconButton>                          
                     </td>

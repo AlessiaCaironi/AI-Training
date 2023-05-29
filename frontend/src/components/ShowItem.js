@@ -12,8 +12,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {FiCheck} from "react-icons/fi";
 import EditIcon from "@mui/icons-material/Edit";
 import ModalAlert from "./ModalAlert";
-import {ImFolderDownload} from "react-icons/im"
-
+import {ImFolderDownload} from "react-icons/im";
+import saveAs from "file-saver";
 
 import AuthContext from "../context/AuthContext";
 
@@ -150,6 +150,21 @@ export default function ShowItem({handleClickBack, item}){
         setOpenImages(!openImages);
     }
 
+    async function fetchBlob(url){
+        const response = await fetch(url.replace('http', 'https'));
+        return response.blob();
+    }
+
+    const downloadZip = () => {
+        const zip = require('jszip')();
+        images.forEach((img, index) => { 
+                zip.file(`${item.name}_${index+1}.jpg`, fetchBlob(img.path_output));                                        
+        });
+        zip.generateAsync({type: "blob"}).then(content => {
+            saveAs(content, `${item.name}.zip`);
+        });
+    }
+
     return(
         <>         
             <Container>
@@ -161,26 +176,24 @@ export default function ShowItem({handleClickBack, item}){
                         <IoArrowBackOutline />
                     </IconButton>
                 </Col>
-                <Col className="text-center my">
+                <Col className="text-center">
                     <HeaderCustomized text={item.name} />
                 </Col>
-                <Col className="text-right my-3">
+                <Col className="text-right mt-3">
                     {
                     (user.username == item.created_by.username) &&
                         <>
-                        <IconButton size='small' color='error' onClick={()=>setShowConfirm(true)}>
-                            <DeleteIcon
-                                className="my-1" 
+                        <IconButton size='small' color='error' onClick={()=>setShowConfirm(true)} className="mt-2">
+                            <DeleteIcon                                
                                 fontSize="inherit"
                             />
                         </IconButton>
                         </>
                     }
-                    <IconButton size='small' color='error'>
-                            <ImFolderDownload
-                                className="my-1" 
+                    <IconButton size='small' color='primary' className="mt-2 ml-3" onClick={downloadZip}>
+                        <ImFolderDownload 
                                 fontSize="inherit"
-                            />
+                        />
                     </IconButton>
                 </Col>
                 </Row>
