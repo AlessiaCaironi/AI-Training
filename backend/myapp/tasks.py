@@ -21,7 +21,10 @@ def preprocessing_img(self, itemid, *args, **kwargs):
             img =img.resize((width,width))                # resize
 
             enhancer = ImageEnhance.Contrast(img)
-            img = enhancer.enhance(1.5)                   # increase contrast
+            img = enhancer.enhance(1.2)                   # increase contrast
+
+            img_new = ImageEnhance.Brightness(img)
+            img = img_new.enhance(1.5)                   # increase brightness
 
             format = elem.path_input.name.split('.')[1]
 
@@ -33,7 +36,7 @@ def preprocessing_img(self, itemid, *args, **kwargs):
                 extension = 'jpg'
 
             # after modifications, save it to the output
-            img.save(output, format=img_format, quality=80)
+            img.save(output, format=img_format, quality=100)
             output.seek(0)
                 
             # change the path_output value to be the newley modified image value
