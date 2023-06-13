@@ -29,3 +29,9 @@ backend/db.sqlite3
 backend/myapp/uploads/
 __pycache__/
 backend/backend/.env
+
+# docker images
+docker/docker_images/
+
+# slides
+/slides/node_modules/
