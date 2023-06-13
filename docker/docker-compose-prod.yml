@@ -1,0 +1,83 @@
+# docker compose per lo sviluppo in locale
+version: "3.2"
+
+services:
+
+  backend: &backend
+    restart: always
+    image: backend:latest
+    container_name: backend
+    # build:
+    #   context: ../backend/
+    #   dockerfile: Dockerfile
+    volumes: 
+      - ./backend/db.sqlite3:/app/backend/db.sqlite3
+      - ./backend/uploads:/app/backend/myapp/uploads
+    # command senza gunicorn
+    # command: python manage.py runserver 0.0.0.0:8000
+    # command con gunicorn
+    command: python manage.py migrate && gunicorn backend.wsgi --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - net
+
+  # eredita tutto dall'oggetto backend e cambia i campi container_name, command e ports
+  # in questo modo backend e celery condividono lo stesso db
+  celery:
+    <<: *backend
+    container_name: celery_worker
+    image: celery:latest
+    command: >
+      celery -A backend.celery worker --pool=solo -l info
+    # aggiunto --uid=nobody --gid=nogroup per evitare warning di sicurezza 
+    ports: []
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    container_name: nginx
+    build: 
+      context: ..
+      dockerfile: ./nginx/prod/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      CLIENT_MAX_BODY_SIZE: 40M
+      GLOBAL_MAX_BODY_SIZE: 40M
+    volumes:
+      - ./nginx/letsencrypt:/etc/letsencrypt
+    networks:
+      - net
+
+  # frontend:
+  #   restart: always
+  #   command: npm start
+  #   # command: /usr/local/lib/node_modules/serve -s build
+  #   container_name: frontend
+  #   build:
+  #     context: ./frontend/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   stdin_open: true
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - net
+
+  redis:
+    restart: always
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
