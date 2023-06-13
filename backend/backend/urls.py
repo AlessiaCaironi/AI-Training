@@ -21,7 +21,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', views.RegisterView.as_view(), name='auth_register'),
     path('', views.getRoutes),
-    path('__debug__/', include('debug_toolbar.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # ultima aggiunta per ottenere le singole immagini
