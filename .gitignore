@@ -35,3 +35,5 @@ docker/docker_images/
 
 # slides
 /slides/node_modules/
+
+save_image.ps1
