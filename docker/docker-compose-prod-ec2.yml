@@ -1,0 +1,56 @@
+# docker compose per la ec2
+version: "3.2"
+
+services:
+
+  backend: &backend
+    restart: always
+    image: backend:latest
+    container_name: backend
+    volumes: 
+      - ./backend/db.sqlite3:/app/backend/db.sqlite3
+      - ./backend/uploads:/app/backend/myapp/uploads
+    command: gunicorn backend.wsgi --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - net
+
+  celery:
+    <<: *backend
+    container_name: celery_worker
+    image: celery:latest
+    command: >
+      celery -A backend.celery worker --pool=solo -l info
+    ports: []
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      CLIENT_MAX_BODY_SIZE: 40M
+      GLOBAL_MAX_BODY_SIZE: 40M
+    volumes:
+      - ./nginx/letsencrypt:/etc/letsencrypt
+    networks:
+      - net
+
+  redis:
+    restart: always
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
+
