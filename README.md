@@ -1,5 +1,3 @@
-# README
-
 *L’applicazione web “AI-Training” è uno strumento che consente il processing di immagini e la definizione di dataset utilizzabili nello sviluppo di modelli di Intelligenza Artificiale di classificazione delle immagini.*
 
 Create a virtual environment to isolate our package dependencies locally 
